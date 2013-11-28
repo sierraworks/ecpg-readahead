@@ -63,6 +63,7 @@ struct statement
 	char	   *oldlocale;
 	int		nparams;
 	char	  **paramvalues;
+	PGresult   *results;
 };
 
 /* structure to store prepared statements for a connection */
