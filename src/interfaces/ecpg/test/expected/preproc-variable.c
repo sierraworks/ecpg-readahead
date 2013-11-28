@@ -190,7 +190,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, "cur", ECPGst_normal, "declare cur no scroll cursor for select name , born , age , married , children from family", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, 0, "cur", ECPGst_normal, "declare cur no scroll cursor for select name , born , age , married , children from family", ECPGt_EOIT, ECPGt_EORT);
 #line 63 "variable.pgc"
 
 if (sqlca.sqlcode < 0) exit (1);}

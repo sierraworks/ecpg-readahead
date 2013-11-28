@@ -201,7 +201,7 @@ get_var1(MYTYPE **myvar0, MYNULLTYPE **mynullvar0)
 static void
 open_cur1(void)
 {
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, "mycur", ECPGst_normal, "declare mycur no scroll cursor for select * from a1", ECPGt_EOIT, 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, 0, "mycur", ECPGst_normal, "declare mycur no scroll cursor for select * from a1", ECPGt_EOIT, 
 	ECPGt_int,&((*( MYTYPE  *)(ECPGget_var( 0)) ).id),(long)1,(long)1,sizeof(int), 
 	ECPGt_int,&((*( MYNULLTYPE  *)(ECPGget_var( 1)) ).id),(long)1,(long)1,sizeof(int), 
 	ECPGt_char,&((*( MYTYPE  *)(ECPGget_var( 0)) ).t),(long)64,(long)1,(64)*sizeof(char), 

@@ -48,6 +48,15 @@ static bool ecpg_cursor_next_pos(struct statement *stmt,
 					int64 *next_pos_out, bool *next_atstart_out,
 					bool *next_atend_out, bool *error, bool *beyond_known);
 
+static bool ecpg_cursor_do_move_absolute(struct statement *stmt,
+					struct cursor_descriptor *cur,
+					int64 amount, int64 *return_pos);
+
+static bool ecpg_cursor_do_move_all(struct statement *stmt,
+					struct cursor_descriptor *cur,
+					enum ECPG_cursor_direction direction,
+					int64 *return_pos);
+
 static void
 raise_cursor_error(struct connection *con, int lineno, const char *name)
 {
@@ -297,11 +306,13 @@ bool
 ECPGopen(const int lineno, const int compat, const int force_indicator,
 			const char *connection_name, const bool questionmarks,
 			const bool with_hold, enum ECPG_cursor_scroll scrollable,
-			long readahead, const bool allow_ra_override,
+			long readahead, const bool allow_ra_override, bool return_rssz,
 			const char *curname, const int st, const char *query, ...)
 {
+	struct sqlca_t *sqlca = ECPGget_sqlca();
 	struct connection *con = ecpg_get_connection(connection_name);
 	struct statement *stmt;
+	struct cursor_descriptor *cur;
 	char	   *cmdstatus;
 	int		subxact_level;
 	va_list		args;
@@ -361,8 +372,6 @@ ECPGopen(const int lineno, const int compat, const int force_indicator,
 		return false;
 	}
 
-	ecpg_do_epilogue(stmt);
-
 	/* Process the environment variables only once */
 	if (!envvars_read)
 	{
@@ -399,9 +408,49 @@ ECPGopen(const int lineno, const int compat, const int force_indicator,
 		subxact_level =
 			(PQtransactionStatus(con->connection) != PQTRANS_IDLE ?
 										1 : 0);
-	add_cursor(lineno, con, curname, subxact_level, with_hold, scrollable,
+
+	cur = add_cursor(lineno, con, curname, subxact_level, with_hold, scrollable,
 					(allow_ra_override && default_fetch_size >= 1 ?
 						default_fetch_size : readahead));
+
+	/*
+	 * Now discover the number of tuples in the result set only if:
+	 * - the cursor is known scrollable, and
+	 * - the user requested to return the number of tuples in
+	 *   the result set.
+	 * Although this slows down OPEN, for some loads caching
+	 * still overweights it.
+	 *
+	 * One downside is the multiple evaluation of volatile functions
+	 * and their possible side effects.
+	 */
+	if (scrollable == ECPGcs_scroll && return_rssz)
+	{
+		int64		return_pos;
+
+		/*
+		 * We are at the start of the result set,
+		 * MOVE ALL returns the number of tuples in it.
+		 */
+		if (!ecpg_cursor_do_move_all(stmt, cur, ECPGc_forward, &return_pos))
+		{
+			del_cursor(con, lineno, curname);
+			ecpg_do_epilogue(stmt);
+			return false;
+		}
+
+		/* Go back to the beginning of the result set. */
+		if (!ecpg_cursor_move(stmt, cur, ECPGc_absolute, 0, false, true))
+		{
+			del_cursor(con, lineno, curname);
+			ecpg_do_epilogue(stmt);
+			return false;
+		}
+
+		sqlca->sqlerrd[2] = (return_pos <= LONG_MAX ? return_pos : 0);
+	}
+
+	ecpg_do_epilogue(stmt);
 
 	return true;
 }

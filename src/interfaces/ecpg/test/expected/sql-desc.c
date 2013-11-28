@@ -245,7 +245,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	/* declare c1 no scroll cursor for $1 */
 #line 57 "desc.pgc"
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, "c1", ECPGst_normal, "declare c1 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, 0, "c1", ECPGst_normal, "declare c1 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "foo2", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_descriptor, "indesc", 0L, 0L, 0L, 
@@ -295,7 +295,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	/* declare c2 no scroll cursor for $1 */
 #line 69 "desc.pgc"
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, "c2", ECPGst_normal, "declare c2 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, 0, "c2", ECPGst_normal, "declare c2 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "foo3", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_descriptor, "indesc", 0L, 0L, 0L, 

@@ -99,7 +99,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 26 "fetch.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 1, 1, "C", ECPGst_normal, "declare C scroll cursor for select * from My_Table", ECPGt_EOIT, ECPGt_EORT);
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 1, 1, 0, "C", ECPGst_normal, "declare C scroll cursor for select * from My_Table", ECPGt_EOIT, ECPGt_EORT);
 #line 28 "fetch.pgc"
 
 if (sqlca.sqlwarn[0] == 'W') sqlprint();
@@ -176,7 +176,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 44 "fetch.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 1, 1, "D", ECPGst_normal, "declare D scroll cursor for select * from My_Table where Item1 = $1", 
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 1, 1, 0, "D", ECPGst_normal, "declare D scroll cursor for select * from My_Table where Item1 = $1", 
 	ECPGt_const,"1",(long)1,(long)1,strlen("1"), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 46 "fetch.pgc"

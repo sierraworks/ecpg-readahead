@@ -479,6 +479,15 @@ EXEC SQL COMMIT;
    For this reason, <literal>READAHEAD 1</literal> is recommended.
   </para>
 
+  <para>
+   There is also a possibility to return the number of tuples returned by the cursor
+   in sqlca.sqlerrd[2] at <command>OPEN</command>. To turn this on, use the
+   <option>-r detect-cursor-resultset-size</option> ECPG command line parameter.
+   This may cause side effects if the cursor query contains calls to volatile
+   functions. See <xref linkend="xfunc-volatility">. Using this feature also
+   slows down opening the cursor.
+  </para>
+
    <note>
     <para>
      The ECPG <command>DECLARE</command> command does not actually
@@ -4892,6 +4901,12 @@ struct
     processed row, if applicable, and
     <literal>sqlca.sqlerrd[2]</literal> contains the number of
     processed or returned rows, if applicable to the command.
+    The <command>OPEN</command> statement may return the
+    result set size in <literal>sqlca.sqlerrd[2]</literal> if
+    option <literal>-r detect-cursor-resultset-size</literal> 
+    is specified on the ECPG command line. This may cause side effects
+    because of traversing the result set. See <xref linkend="xfunc-volatility">.
+    It will also slow down opening the cursor.
    </para>
 
    <para>

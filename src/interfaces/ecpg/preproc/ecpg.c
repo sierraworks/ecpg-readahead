@@ -18,7 +18,8 @@ bool		autocommit = false,
 			force_indicator = true,
 			questionmarks = false,
 			regression_mode = false,
-			auto_prepare = false;
+			auto_prepare = false,
+			cursor_rssz = false;
 long		fetch_readahead = 1; /* No readahead by default */
 
 char	   *output_filename;
@@ -53,7 +54,7 @@ help(const char *progname)
 	printf(_("  -o OUTFILE     write result to OUTFILE\n"));
 	printf(_("  -r OPTION      specify run-time behavior; OPTION can be:\n"
 	 "                 \"no_indicator\", \"prepare\", \"questionmarks\",\n"
-	 "                 \"readahead=number\"\n"));
+	 "                 \"readahead=number\", \"detect-cursor-resultset-size\"\n"));
 	printf(_("  --regression   run in regression testing mode\n"));
 	printf(_("  -t             turn on autocommit of transactions\n"));
 	printf(_("  --version      output version information, then exit\n"));
@@ -247,6 +248,8 @@ main(int argc, char *const argv[])
 						return ILLEGAL_OPTION;
 					}
 				}
+				else if (strcmp(optarg, "detect-cursor-resultset-size") == 0)
+					cursor_rssz = true;
 				else
 				{
 					fprintf(stderr, _("Try \"%s --help\" for more information.\n"), argv[0]);

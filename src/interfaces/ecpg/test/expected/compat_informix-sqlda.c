@@ -241,7 +241,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 1, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, "mycur1", ECPGst_normal, "declare mycur1 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 1, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, 0, "mycur1", ECPGst_normal, "declare mycur1 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "st_id1", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 101 "sqlda.pgc"
@@ -316,7 +316,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 1, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, "mycur2", ECPGst_normal, "declare mycur2 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 1, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, 1, 0, "mycur2", ECPGst_normal, "declare mycur2 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "st_id2", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 138 "sqlda.pgc"

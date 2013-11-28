@@ -24,7 +24,8 @@ extern bool autocommit,
 			force_indicator,
 			questionmarks,
 			regression_mode,
-			auto_prepare;
+			auto_prepare,
+			cursor_rssz;
 extern long	fetch_readahead;
 extern int	braces_open,
 			ret_value,

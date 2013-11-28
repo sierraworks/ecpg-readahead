@@ -75,7 +75,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test scroll_cur for move absolute -1\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 34 "cursor-ra-move.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -104,7 +104,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test noscroll_cur for move absolute -1\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 8, 0, "noscroll_cur", ECPGst_normal, "declare noscroll_cur no scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 8, 0, 0, "noscroll_cur", ECPGst_normal, "declare noscroll_cur no scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 48 "cursor-ra-move.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -133,7 +133,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test unspec_cur1 for move absolute -1\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 8, 0, "unspec_cur1", ECPGst_normal, "declare unspec_cur1 no scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 8, 0, 0, "unspec_cur1", ECPGst_normal, "declare unspec_cur1 no scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 62 "cursor-ra-move.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -162,7 +162,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test unspec_cur2 for move absolute -1\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 8, 0, "unspec_cur2", ECPGst_normal, "declare unspec_cur2 no scroll cursor for select t1 . id , t1 . t , t2 . id , t2 . t from t1 join t1 as t2 on ( t1 . id = 27 - t2 . id ) order by t1 . id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 8, 0, 0, "unspec_cur2", ECPGst_normal, "declare unspec_cur2 no scroll cursor for select t1 . id , t1 . t , t2 . id , t2 . t from t1 join t1 as t2 on ( t1 . id = 27 - t2 . id ) order by t1 . id", ECPGt_EOIT, ECPGt_EORT);
 #line 76 "cursor-ra-move.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -193,7 +193,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test scroll_cur for move relative 8\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 92 "cursor-ra-move.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -247,7 +247,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test scroll_cur for move forward 8\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 126 "cursor-ra-move.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
