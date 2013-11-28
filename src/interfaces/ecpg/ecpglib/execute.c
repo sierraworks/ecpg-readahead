@@ -1736,8 +1736,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 
 	if (!ecpg_init(con, connection_name, lineno))
 	{
-		setlocale(LC_NUMERIC, stmt->oldlocale);
-		free_statement(stmt);
+		ecpg_do_epilogue(stmt);
 		return (false);
 	}
 
@@ -1765,8 +1764,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	{
 		if (!ecpg_auto_prepare(lineno, connection_name, compat, &prepname, query))
 		{
-			setlocale(LC_NUMERIC, stmt->oldlocale);
-			free_statement(stmt);
+			ecpg_do_epilogue(stmt);
 			va_end(args);
 			return (false);
 		}
@@ -1796,8 +1794,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 		else
 		{
 			ecpg_raise(lineno, ECPG_INVALID_STMT, ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME, stmt->command);
-			setlocale(LC_NUMERIC, stmt->oldlocale);
-			free_statement(stmt);
+			ecpg_do_epilogue(stmt);
 			va_end(args);
 			return (false);
 		}
@@ -1825,8 +1822,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 
 			if (!(var = (struct variable *) ecpg_alloc(sizeof(struct variable), lineno)))
 			{
-				setlocale(LC_NUMERIC, stmt->oldlocale);
-				free_statement(stmt);
+				ecpg_do_epilogue(stmt);
 				va_end(args);
 				return false;
 			}
@@ -1882,8 +1878,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 			{
 				ecpg_raise(lineno, ECPG_INVALID_STMT, ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME, NULL);
 				ecpg_free(var);
-				setlocale(LC_NUMERIC, stmt->oldlocale);
-				free_statement(stmt);
+				ecpg_do_epilogue(stmt);
 				va_end(args);
 				return false;
 			}
@@ -1905,8 +1900,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	if (con == NULL || con->connection == NULL)
 	{
 		ecpg_raise(lineno, ECPG_NOT_CONN, ECPG_SQLSTATE_ECPG_INTERNAL_ERROR, (con) ? con->name : ecpg_gettext("<empty>"));
-		setlocale(LC_NUMERIC, stmt->oldlocale);
-		free_statement(stmt);
+		ecpg_do_epilogue(stmt);
 		return false;
 	}
 
@@ -1916,10 +1910,23 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	status = ecpg_execute(stmt);
 
 	/* and reset locale value so our application is not affected */
-	setlocale(LC_NUMERIC, stmt->oldlocale);
-	free_statement(stmt);
+	ecpg_do_epilogue(stmt);
 
 	return (status);
+}
+
+/*
+ * ecpg_do_epilogue
+ *    Restore the application locale and free the statement structure.
+ */
+void
+ecpg_do_epilogue(struct statement *stmt)
+{
+	if (stmt == NULL)
+		return;
+
+	setlocale(LC_NUMERIC, stmt->oldlocale);
+	free_statement(stmt);
 }
 
 /* old descriptor interface */
