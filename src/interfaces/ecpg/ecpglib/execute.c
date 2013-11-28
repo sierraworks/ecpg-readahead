@@ -1078,18 +1078,18 @@ ecpg_store_input(const int lineno, const bool force_indicator, const struct vari
 	return true;
 }
 
-static void
-free_params(char **paramValues, int nParams, bool print, int lineno)
+void
+ecpg_free_params(struct statement *stmt, bool print)
 {
 	int			n;
 
-	for (n = 0; n < nParams; n++)
+	for (n = 0; n < stmt->nparams; n++)
 	{
 		if (print)
-			ecpg_log("free_params on line %d: parameter %d = %s\n", lineno, n + 1, paramValues[n] ? paramValues[n] : "null");
-		ecpg_free(paramValues[n]);
+			ecpg_log("ecpg_free_params on line %d: parameter %d = %s\n", stmt->lineno, n + 1, stmt->paramvalues[n] ? stmt->paramvalues[n] : "null");
+		ecpg_free(stmt->paramvalues[n]);
 	}
-	ecpg_free(paramValues);
+	ecpg_free(stmt->paramvalues);
 }
 
 
@@ -1134,8 +1134,6 @@ ecpg_execute(struct statement * stmt)
 	PGnotify   *notify;
 	struct variable *var;
 	int			desc_counter = 0;
-	char	  **paramValues = NULL;
-	int			nParams = 0;
 	int			position = 0;
 	struct sqlca_t *sqlca = ECPGget_sqlca();
 	bool		clear_result = true;
@@ -1338,7 +1336,7 @@ ecpg_execute(struct statement * stmt)
 			ecpg_raise(stmt->lineno, ECPG_TOO_MANY_ARGUMENTS,
 					   ECPG_SQLSTATE_USING_CLAUSE_DOES_NOT_MATCH_PARAMETERS,
 					   NULL);
-			free_params(paramValues, nParams, false, stmt->lineno);
+			ecpg_free_params(stmt, false);
 			return false;
 		}
 
@@ -1353,7 +1351,7 @@ ecpg_execute(struct statement * stmt)
 
 			if (!insert_tobeinserted(position, ph_len, stmt, tobeinserted))
 			{
-				free_params(paramValues, nParams, false, stmt->lineno);
+				ecpg_free_params(stmt, false);
 				return false;
 			}
 			tobeinserted = NULL;
@@ -1368,21 +1366,24 @@ ecpg_execute(struct statement * stmt)
 		{
 			if (!insert_tobeinserted(position, 2, stmt, tobeinserted))
 			{
-				free_params(paramValues, nParams, false, stmt->lineno);
+				ecpg_free_params(stmt, false);
 				return false;
 			}
 			tobeinserted = NULL;
 		}
 		else
 		{
-			nParams++;
-			if (!(paramValues = (char **) ecpg_realloc(paramValues, sizeof(char *) * nParams, stmt->lineno)))
+			char	  **paramvalues;
+
+			if (!(paramvalues = (char **) ecpg_realloc(stmt->paramvalues, sizeof(char *) * (stmt->nparams + 1), stmt->lineno)))
 			{
-				ecpg_free(paramValues);
+				ecpg_free_params(stmt, false);
 				return false;
 			}
 
-			paramValues[nParams - 1] = tobeinserted;
+			stmt->nparams++;
+			stmt->paramvalues = paramvalues;
+			stmt->paramvalues[stmt->nparams - 1] = tobeinserted;
 
 			/* let's see if this was an old style placeholder */
 			if (stmt->command[position] == '?')
@@ -1393,7 +1394,7 @@ ecpg_execute(struct statement * stmt)
 
 				if (!(tobeinserted = (char *) ecpg_alloc(buffersize, stmt->lineno)))
 				{
-					free_params(paramValues, nParams, false, stmt->lineno);
+					ecpg_free_params(stmt, false);
 					return false;
 				}
 
@@ -1401,7 +1402,7 @@ ecpg_execute(struct statement * stmt)
 
 				if (!insert_tobeinserted(position, 2, stmt, tobeinserted))
 				{
-					free_params(paramValues, nParams, false, stmt->lineno);
+					ecpg_free_params(stmt, false);
 					return false;
 				}
 				tobeinserted = NULL;
@@ -1417,7 +1418,7 @@ ecpg_execute(struct statement * stmt)
 	{
 		ecpg_raise(stmt->lineno, ECPG_TOO_FEW_ARGUMENTS,
 				 ECPG_SQLSTATE_USING_CLAUSE_DOES_NOT_MATCH_PARAMETERS, NULL);
-		free_params(paramValues, nParams, false, stmt->lineno);
+		ecpg_free_params(stmt, false);
 		return false;
 	}
 
@@ -1428,33 +1429,33 @@ ecpg_execute(struct statement * stmt)
 		results = PQexec(stmt->connection->connection, "begin transaction");
 		if (!ecpg_check_PQresult(results, stmt->lineno, stmt->connection->connection, stmt->compat))
 		{
-			free_params(paramValues, nParams, false, stmt->lineno);
+			ecpg_free_params(stmt, false);
 			return false;
 		}
 		PQclear(results);
 	}
 
-	ecpg_log("ecpg_execute on line %d: query: %s; with %d parameter(s) on connection %s\n", stmt->lineno, stmt->command, nParams, stmt->connection->name);
+	ecpg_log("ecpg_execute on line %d: query: %s; with %d parameter(s) on connection %s\n", stmt->lineno, stmt->command, stmt->nparams, stmt->connection->name);
 	if (stmt->statement_type == ECPGst_execute)
 	{
-		results = PQexecPrepared(stmt->connection->connection, stmt->name, nParams, (const char *const *) paramValues, NULL, NULL, 0);
+		results = PQexecPrepared(stmt->connection->connection, stmt->name, stmt->nparams, (const char *const *) stmt->paramvalues, NULL, NULL, 0);
 		ecpg_log("ecpg_execute on line %d: using PQexecPrepared for \"%s\"\n", stmt->lineno, stmt->command);
 	}
 	else
 	{
-		if (nParams == 0)
+		if (stmt->nparams == 0)
 		{
 			results = PQexec(stmt->connection->connection, stmt->command);
 			ecpg_log("ecpg_execute on line %d: using PQexec\n", stmt->lineno);
 		}
 		else
 		{
-			results = PQexecParams(stmt->connection->connection, stmt->command, nParams, NULL, (const char *const *) paramValues, NULL, NULL, 0);
+			results = PQexecParams(stmt->connection->connection, stmt->command, stmt->nparams, NULL, (const char *const *) stmt->paramvalues, NULL, NULL, 0);
 			ecpg_log("ecpg_execute on line %d: using PQexecParams\n", stmt->lineno);
 		}
 	}
 
-	free_params(paramValues, nParams, true, stmt->lineno);
+	ecpg_free_params(stmt, true);
 
 	if (!ecpg_check_PQresult(results, stmt->lineno, stmt->connection->connection, stmt->compat))
 		return (false);
@@ -1726,6 +1727,8 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 
 	if (!(stmt = (struct statement *) ecpg_alloc(sizeof(struct statement), lineno)))
 		return false;
+
+	memset(stmt, 0, sizeof(struct statement));
 
 	/* Make sure we do NOT honor the locale for numeric input/output */
 	/* since the database wants the standard decimal point */
