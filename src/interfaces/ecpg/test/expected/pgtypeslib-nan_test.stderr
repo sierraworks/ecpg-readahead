@@ -20,9 +20,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 34: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 37: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 37: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 37: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 37: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 37: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 37: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -52,9 +56,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 46: OK: INSERT 0 1
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 37: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 37: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 37: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 37: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 37: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 37: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -84,9 +92,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 46: OK: INSERT 0 1
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 37: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 37: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 37: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 37: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 37: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 37: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -116,11 +128,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 46: OK: INSERT 0 1
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 37: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 37: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 37: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 37: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 37: correctly got 0 tuples with 3 fields
+[NO_PID]: ecpg_cursor_execute on line 37: command fetch forward 1 from cur; returned 0 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 37: no data found on line 37
 [NO_PID]: sqlca: code: 100, state: 02000
@@ -136,9 +150,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 50: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -148,9 +166,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: NaN offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -160,9 +182,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: Infinity offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -172,9 +198,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: -Infinity offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -184,9 +214,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: NaN offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -196,9 +230,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: NaN offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -208,9 +246,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: Infinity offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -220,9 +262,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: Infinity offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -232,9 +278,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: -Infinity offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 53: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -244,11 +294,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 53: RESULT: -Infinity offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 53: query: fetch from cur; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 53: query: fetch from cur; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 53: query: fetch forward 1 from cur; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 53: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 53: correctly got 0 tuples with 3 fields
+[NO_PID]: ecpg_cursor_execute on line 53: command fetch forward 1 from cur; returned 0 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 53: no data found on line 53
 [NO_PID]: sqlca: code: 100, state: 02000
@@ -304,9 +356,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 76: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 79: query: fetch from cur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 79: query: fetch from cur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 79: query: fetch forward 1 from cur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 79: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 79: command fetch forward 1 from cur1; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 79: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -316,9 +372,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 79: RESULT: NaN offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 79: query: fetch from cur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 79: query: fetch from cur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 79: query: fetch forward 1 from cur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 79: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 79: command fetch forward 1 from cur1; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 79: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -328,9 +388,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 79: RESULT: NaN offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 79: query: fetch from cur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 79: query: fetch from cur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 79: query: fetch forward 1 from cur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 79: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 79: command fetch forward 1 from cur1; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 79: correctly got 1 tuples with 3 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -340,11 +404,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 79: RESULT: NaN offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 79: query: fetch from cur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 79: query: fetch from cur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 79: query: fetch forward 1 from cur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 79: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 79: correctly got 0 tuples with 3 fields
+[NO_PID]: ecpg_cursor_execute on line 79: command fetch forward 1 from cur1; returned 0 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 79: no data found on line 79
 [NO_PID]: sqlca: code: 100, state: 02000

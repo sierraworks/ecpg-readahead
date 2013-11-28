@@ -75,9 +75,13 @@ SQL error: nonstandard use of \\ in a string literal
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 45: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 51: query: fetch C; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 51: query: fetch C; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 51: query: fetch forward 1 from C; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 51: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 51: command fetch forward 1 from C; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 51: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -85,9 +89,13 @@ SQL error: nonstandard use of \\ in a string literal
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 51: RESULT: a\\b offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 51: query: fetch C; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 51: query: fetch C; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 51: query: fetch forward 1 from C; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 51: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 51: command fetch forward 1 from C; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 51: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -95,9 +103,13 @@ SQL error: nonstandard use of \\ in a string literal
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 51: RESULT: a\\b offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 51: query: fetch C; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 51: query: fetch C; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 51: query: fetch forward 1 from C; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 51: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 51: command fetch forward 1 from C; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 51: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -105,9 +117,13 @@ SQL error: nonstandard use of \\ in a string literal
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 51: RESULT: a\\\\b offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 51: query: fetch C; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 51: query: fetch C; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 51: query: fetch forward 1 from C; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 51: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 51: command fetch forward 1 from C; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 51: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -115,11 +131,13 @@ SQL error: nonstandard use of \\ in a string literal
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 51: RESULT: a\\b offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 51: query: fetch C; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 51: query: fetch C; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 51: query: fetch forward 1 from C; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 51: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 51: correctly got 0 tuples with 2 fields
+[NO_PID]: ecpg_cursor_execute on line 51: command fetch forward 1 from C; returned 0 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 51: no data found on line 51
 [NO_PID]: sqlca: code: 100, state: 02000

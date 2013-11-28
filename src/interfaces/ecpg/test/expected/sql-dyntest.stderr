@@ -34,9 +34,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 60: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 64: query: fetch in MYCURS; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 64: query: fetch in MYCURS; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 64: query: fetch forward 1 from MYCURS; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 64: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 64: command fetch forward 1 from MYCURS; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 64: correctly got 1 tuples with 7 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -204,9 +208,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 176: RESULT: 14.07.1987 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 64: query: fetch in MYCURS; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 64: query: fetch in MYCURS; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 64: query: fetch forward 1 from MYCURS; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 64: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 64: command fetch forward 1 from MYCURS; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 64: correctly got 1 tuples with 7 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -374,11 +382,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 176: RESULT: 05.11.1999 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 64: query: fetch in MYCURS; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 64: query: fetch in MYCURS; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 64: query: fetch forward 1 from MYCURS; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 64: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 64: correctly got 0 tuples with 7 fields
+[NO_PID]: ecpg_cursor_execute on line 64: command fetch forward 1 from MYCURS; returned 0 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 64: no data found on line 64
 [NO_PID]: sqlca: code: 100, state: 02000

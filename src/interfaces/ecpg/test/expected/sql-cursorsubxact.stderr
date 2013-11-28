@@ -109,9 +109,13 @@ SQL error: no such savepoint on line 199
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 220: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 226: query: fetch from "MyCur"; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 226: query: fetch from $0; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 226: query: fetch forward 1 from "MyCur"; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 226: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 226: command fetch forward 1 from "MyCur"; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 226: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -137,9 +141,13 @@ SQL error: current transaction is aborted, commands ignored until end of transac
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGtrans on line 264: action "release savepoint a"; connection "regress1"
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 272: query: fetch from "MyCur"; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 272: query: fetch from $0; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 272: query: fetch forward 1 from "MyCur"; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 272: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 272: command fetch forward 1 from "MyCur"; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 272: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000

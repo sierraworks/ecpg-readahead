@@ -30,9 +30,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 103: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 111: query: fetch 1 from mycur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 111: query: fetch 1 from mycur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 111: query: fetch forward 1 from mycur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 111: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 111: command fetch forward 1 from mycur1; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 111: correctly got 1 tuples with 5 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -60,9 +64,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 111: putting result (1 tuple 5 fields) into sqlda descriptor
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 111: query: fetch 1 from mycur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 111: query: fetch 1 from mycur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 111: query: fetch forward 1 from mycur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 111: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 111: command fetch forward 1 from mycur1; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 111: correctly got 1 tuples with 5 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -84,9 +92,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 111: putting result (1 tuple 5 fields) into sqlda descriptor
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 111: query: fetch 1 from mycur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 111: query: fetch 1 from mycur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 111: query: fetch forward 1 from mycur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 111: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 111: command fetch forward 1 from mycur1; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 111: correctly got 1 tuples with 5 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -114,11 +126,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 111: putting result (1 tuple 5 fields) into sqlda descriptor
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 111: query: fetch 1 from mycur1; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 111: query: fetch 1 from mycur1; fetch all: 0 amount: 1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 111: query: fetch forward 1 from mycur1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 111: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 111: correctly got 0 tuples with 5 fields
+[NO_PID]: ecpg_cursor_execute on line 111: command fetch forward 1 from mycur1; returned 0 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 111: no data found on line 111
 [NO_PID]: sqlca: code: 100, state: 02000
@@ -138,9 +152,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 138: OK: DECLARE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 141: query: fetch all from mycur2; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 141: query: fetch all from mycur2; fetch all: 1 amount: 0
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 141: query: fetch forward 1000 from mycur2; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 141: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 141: command fetch forward 1000 from mycur2; returned 3 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 141: correctly got 3 tuples with 5 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -209,6 +227,8 @@
 [NO_PID]: ecpg_get_data on line 141: RESULT: d          offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 141: putting result (1 tuple 5 fields) into sqlda descriptor
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 141: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 157: query: close mycur2; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000

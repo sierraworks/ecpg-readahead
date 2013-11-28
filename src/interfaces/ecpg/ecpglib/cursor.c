@@ -1873,18 +1873,28 @@ ECPGfetch(const int lineno, const int compat, const int force_indicator,
 		return false;
 	}
 
-	if (cur->readahead == 1)
+	ecpg_log("ECPGfetch on line %d: query: %s; fetch all: %d amount: %lld\n",
+						   lineno, query, fetchall, (long long)amount1);
+
+	/*
+	 * Make sure there are no query parameters.
+	 * This code overrides the statements coming from
+	 * the application with custom MOVE and FETCH statements.
+	 */
+	ecpg_free_params(stmt, true);
+
+	if (move)
 	{
 		/*
-		 * If there is no readahead, it's no use playing games
-		 * behind the application's back.
+		 * There is no expected output from MOVE statements
+		 * but process it to detect excess arguments.
+		 * ecpg_process_output() is called from ecpg_cursor_execute().
 		 */
-		if (!ecpg_execute(stmt))
+		if (!ecpg_cursor_move(stmt, cur, dir, amount1, fetchall, false))
 		{
 			ecpg_do_epilogue(stmt);
 			return false;
 		}
-
 		if (!ecpg_process_output(stmt, 0, PQntuples(stmt->results), LOOP_FORWARD, 0, true, false))
 		{
 			ecpg_do_epilogue(stmt);
@@ -1893,51 +1903,19 @@ ECPGfetch(const int lineno, const int compat, const int force_indicator,
 	}
 	else
 	{
-		ecpg_log("ECPGfetch on line %d: query: %s; fetch all: %d amount: %lld\n",
-							   lineno, query, fetchall, (long long)amount1);
-
-		/*
-		 * Make sure there are no query parameters.
-		 * This code overrides the statements coming from
-		 * the application with custom MOVE and FETCH statements.
-		 */
-		ecpg_free_params(stmt, true);
-
-		/*
-		 * There is no expected output from MOVE statements but process
-		 * it to detect excess arguments. ecpg_process_output() is called
-		 * from ecpg_cursor_execute().
-		 */
-		if (move)
+		if (dir == ECPGc_forward || dir == ECPGc_relative)
 		{
-			if (!ecpg_cursor_move(stmt, cur, dir, amount1, fetchall, false))
+			if (llabs(amount1) > cur->readahead)
 			{
-				ecpg_do_epilogue(stmt);
-				return false;
-			}
-			if (!ecpg_process_output(stmt, 0, PQntuples(stmt->results), LOOP_FORWARD, 0, true, false))
-			{
-				ecpg_do_epilogue(stmt);
-				return false;
+				cur->readahead = llabs(amount1);
+				ecpg_log("ECPGfetch on line %d: permanently raising readahead window size to %lld\n",
+								lineno, (long long)cur->readahead);
 			}
 		}
-		else
+		if (!ecpg_cursor_fetch(stmt, cur, dir, amount1, fetchall))
 		{
-			if (dir == ECPGc_forward || dir == ECPGc_relative)
-			{
-				if (llabs(amount1) > cur->readahead)
-				{
-					cur->readahead = llabs(amount1);
-					ecpg_log("ECPGfetch on line %d: permanently raising readahead window size to %lld\n",
-									lineno, (long long)cur->readahead);
-				}
-			}
-
-			if (!ecpg_cursor_fetch(stmt, cur, dir, amount1, fetchall))
-			{
-				ecpg_do_epilogue(stmt);
-				return false;
-			}
+			ecpg_do_epilogue(stmt);
+			return false;
 		}
 	}
 
