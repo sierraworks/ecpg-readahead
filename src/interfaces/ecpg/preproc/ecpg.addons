@@ -222,7 +222,7 @@ ECPG: stmtViewStmt rule
 	}
 	| ECPGSetAutocommit
 	{
-		fprintf(yyout, "{ ECPGsetcommit(__LINE__, \"%s\", %s);", $1, connection ? connection : "NULL");
+		fprintf(yyout, "{ ECPGsetcommit(__LINE__, %d, %s);", (strcmp($1, "on") == 0), connection ? connection : "NULL");
 		whenever_action(2);
 		free($1);
 	}

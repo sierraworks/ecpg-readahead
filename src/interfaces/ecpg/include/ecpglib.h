@@ -48,7 +48,7 @@ extern		"C"
 
 void		ECPGdebug(int, FILE *);
 bool		ECPGstatus(int, const char *);
-bool		ECPGsetcommit(int, const char *, const char *);
+bool		ECPGsetcommit(int, const bool, const char *);
 bool		ECPGsetconn(int, const char *);
 bool		ECPGconnect(int, int, const char *, const char *, const char *, const char *, int);
 bool		ECPGdo(const int, const int, const int, const char *, const bool, const int, const char *,...);

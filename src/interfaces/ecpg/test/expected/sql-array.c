@@ -141,7 +141,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 27 "array.pgc"
 
 
-	{ ECPGsetcommit(__LINE__, "on", NULL);
+	{ ECPGsetcommit(__LINE__, 1, NULL);
 #line 29 "array.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}

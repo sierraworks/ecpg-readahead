@@ -111,7 +111,7 @@ int main()
 	{ ECPGconnect(__LINE__, 0, "regress1" , NULL, NULL , NULL, 0); }
 #line 15 "indicators.pgc"
 
-	{ ECPGsetcommit(__LINE__, "off", NULL);}
+	{ ECPGsetcommit(__LINE__, 0, NULL);}
 #line 16 "indicators.pgc"
 
 

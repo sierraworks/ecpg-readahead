@@ -61,7 +61,7 @@ if (sqlca.sqlcode < 0) sqlprint ( );}
 #line 32 "num_test.pgc"
 
 
-	{ ECPGsetcommit(__LINE__, "off", NULL);
+	{ ECPGsetcommit(__LINE__, 0, NULL);
 #line 34 "num_test.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint ( );}

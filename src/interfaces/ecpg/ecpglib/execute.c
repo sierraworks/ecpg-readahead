@@ -1866,7 +1866,7 @@ ecpg_do_prologue(int lineno, const int compat, const int force_indicator,
 		return (false);
 	}
 
-	if (con->client_side_error)
+	if (con->client_side_error || PQtransactionStatus(con->connection) == PQTRANS_INERROR)
 	{
 		ecpg_do_epilogue(stmt);
 		ecpg_raise(lineno, ECPG_TRANS, ECPG_SQLSTATE_IN_FAILED_SQL_TRANSACTION, NULL);
