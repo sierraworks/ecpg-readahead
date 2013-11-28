@@ -243,10 +243,10 @@ output_open_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st
 {
 	struct cursor *ptr = get_cursor(current_cursor);
 
-	fprintf(yyout, "{ ECPGopen(__LINE__, %d, %d, %s, %d, %d, %s, %ld, ",
+	fprintf(yyout, "{ ECPGopen(__LINE__, %d, %d, %s, %d, %d, %s, %ld, %d, ",
 						compat, force_indicator, connection ? connection : "NULL", questionmarks,
 						ptr->with_hold, ecpg_cursor_scroll_name[ptr->scrollable],
-						ptr->fetch_readahead);
+						ptr->fetch_readahead, ptr->allow_ra_override);
 	output_cursor_name(ptr);
 	output_statement_epilogue(stmt, whenever_mode, st);
 }

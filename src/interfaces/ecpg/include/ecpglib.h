@@ -65,7 +65,7 @@ char	   *ECPGerrmsg(void);
 
 /* Cursor functions */
 bool		ECPGopen(const int, const int, const int, const char *, const bool, const bool,
-				enum ECPG_cursor_scroll, long readahead,
+				enum ECPG_cursor_scroll, long, const bool,
 				const char *, const int, const char *, ...);
 bool		ECPGfetch(const int, const int, const int, const char *, const bool,
 				enum ECPG_cursor_direction, const char *, bool,

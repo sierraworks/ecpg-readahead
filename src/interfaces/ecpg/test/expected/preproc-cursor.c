@@ -187,7 +187,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, curname1, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, 1, curname1, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname1),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 67 "cursor.pgc"
@@ -323,7 +323,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, curname2, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, 1, curname2, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname2),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(id),(long)1,(long)1,sizeof(int), 
@@ -483,7 +483,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, curname3, ECPGst_normal, "declare $0 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, 1, curname3, ECPGst_normal, "declare $0 no scroll cursor for $1", 
 	ECPGt_char,&(curname3),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char_variable,(ECPGprepared_statement("test1", "st_id1", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
@@ -493,7 +493,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 if (sqlca.sqlcode < 0) exit (1);}
 #line 153 "cursor.pgc"
 
-	{ ECPGopen(__LINE__, 0, 1, "test2", 0, 0, ECPGcs_no_scroll, 1, curname5, ECPGst_normal, "declare $0 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, "test2", 0, 0, ECPGcs_no_scroll, 1, 1, curname5, ECPGst_normal, "declare $0 no scroll cursor for $1", 
 	ECPGt_char,&(curname5),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char_variable,(ECPGprepared_statement("test2", "st_id1", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
@@ -663,7 +663,7 @@ if (sqlca.sqlcode < 0) exit (1);}
 
 
 	strcpy(msg, "open");
-	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, curname4.arr, ECPGst_normal, "declare $0 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, "test1", 0, 0, ECPGcs_no_scroll, 1, 1, curname4.arr, ECPGst_normal, "declare $0 no scroll cursor for $1", 
 	ECPGt_varchar,&(curname4),(long)50,(long)1,sizeof(struct varchar_1), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char_variable,(ECPGprepared_statement("test1", "st_id2", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 

@@ -465,7 +465,10 @@ EXEC SQL COMMIT;
    Option <option>-r readahead=number</option> on the ECPG command line modifies
    the default readahead window size for all cursors. Explicit
    <literal>READAHEAD number</literal> sets the readahead window size for
-   the specified cursor.
+   the specified cursor. If this clause is not explicitly specified for a cursor
+   (option <option>-r readahead=number</option> is considered implicit), then
+   setting the <literal>ECPGFETCHSZ</literal> environment variable overrides
+   the readahead window size for all such cursors.
   </para>
 
   <para>

@@ -318,13 +318,17 @@ ECPGCursorStmt:	DECLARE cursor_name cursor_options opt_readahead CURSOR opt_hold
 			this->opened = false;
 			this->with_hold = (strncmp($6, "with ", 5) == 0);
 			if (strcmp($4, "default") == 0)
+			{
+				this->allow_ra_override = true;
 				this->fetch_readahead = fetch_readahead;
+			}
 			else
 			{
 				int	this_readahead = atoi($4);
 
 				if (this_readahead < 1)
 					mmerror(PARSE_ERROR, ET_ERROR, "cursor readahead cannot be less than 1");
+				this->allow_ra_override = false;
 				this->fetch_readahead = this_readahead;
 			}
 			this->vartype = current_cursor_vartype;

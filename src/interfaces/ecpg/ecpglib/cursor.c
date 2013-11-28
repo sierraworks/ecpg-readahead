@@ -15,6 +15,12 @@
 #include "ecpgerrno.h"
 #include "extern.h"
 
+static bool	envvars_read = false;	/* the variables below are already
+					   initialized */
+static int	default_fetch_size = -1;/* use this value instead of the
+					   passed-in per-cursor window size.
+					   -1 means unset. */
+
 static char *ecpg_cursor_direction_sql_name[] = {
 	"absolute",
 	"relative",
@@ -25,7 +31,7 @@ static char *ecpg_cursor_direction_sql_name[] = {
 	"forward",
 	"backward"
 };
- 
+
 static bool ecpg_cursor_do_move_all(struct statement *stmt,
 					struct cursor_descriptor *cur,
 					enum ECPG_cursor_direction direction,
@@ -291,7 +297,7 @@ bool
 ECPGopen(const int lineno, const int compat, const int force_indicator,
 			const char *connection_name, const bool questionmarks,
 			const bool with_hold, enum ECPG_cursor_scroll scrollable,
-			long readahead,
+			long readahead, const bool allow_ra_override,
 			const char *curname, const int st, const char *query, ...)
 {
 	struct connection *con = ecpg_get_connection(connection_name);
@@ -357,6 +363,35 @@ ECPGopen(const int lineno, const int compat, const int force_indicator,
 
 	ecpg_do_epilogue(stmt);
 
+	/* Process the environment variables only once */
+	if (!envvars_read)
+	{
+		char	   *tmp, *endptr;
+		long		fetch_size_env;
+
+		/*
+		 * If ECPGFETCHSZ is set, interpret it.
+		 * - If invalid or unset, ignore. Leave default_fetch_size == -1
+		 * - If ECPGFETCHSZ <= 0, caching is disabled (readahead = 1)
+		 * - Otherwise use the actual number
+		 */
+		tmp = getenv("ECPGFETCHSZ");
+		if (tmp)
+		{
+			fetch_size_env = strtol(tmp, &endptr, 10);
+			if (*endptr)
+				fetch_size_env = -1;
+			else
+			{
+				/* Readahead disabled */
+				if (fetch_size_env <= 0)
+					fetch_size_env = 1;
+			}
+			default_fetch_size = fetch_size_env;
+		}
+		envvars_read = true;
+	}
+
 	/* Finally add the cursor to the connection. */
 	if (con->subxact_desc)
 		subxact_level = con->subxact_desc->level;
@@ -364,7 +399,9 @@ ECPGopen(const int lineno, const int compat, const int force_indicator,
 		subxact_level =
 			(PQtransactionStatus(con->connection) != PQTRANS_IDLE ?
 										1 : 0);
-	add_cursor(lineno, con, curname, subxact_level, with_hold, scrollable, readahead);
+	add_cursor(lineno, con, curname, subxact_level, with_hold, scrollable,
+					(allow_ra_override && default_fetch_size >= 1 ?
+						default_fetch_size : readahead));
 
 	return true;
 }

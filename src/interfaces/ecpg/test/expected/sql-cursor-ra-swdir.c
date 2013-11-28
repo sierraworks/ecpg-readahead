@@ -157,7 +157,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 70 "cursor-ra-swdir.pgc"
 
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, "mycur", ECPGst_normal, "declare mycur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, 0, "mycur", ECPGst_normal, "declare mycur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 72 "cursor-ra-swdir.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}

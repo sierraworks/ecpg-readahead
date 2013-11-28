@@ -83,7 +83,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("test scroll_cur for move absolute n (every 4th tuple forward, positive positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 38 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -150,7 +150,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur for move absolute n (every 4th tuple backward, negative positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 73 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -217,7 +217,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur for fetch relative 4 (positive positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 108 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -290,7 +290,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur for fetch relative -4 (negative positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 153 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -380,7 +380,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur for fetch forward 4 (positive positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 205 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -453,7 +453,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur for fetch forward -4 (negative positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 8, 0, "scroll_cur", ECPGst_normal, "declare scroll_cur scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 250 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -544,7 +544,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur4 for move absolute n (every 5th tuple forward, positive positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, 0, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 303 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -655,7 +655,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur4 for move absolute n (every 5th tuple backward, negative positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, 0, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 364 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -767,7 +767,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur4 for fetch relative 5 (positive positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, 0, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 426 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
@@ -889,7 +889,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("\ntest scroll_cur4 for move relative -5 (negative positions)\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, 4, 0, "scroll_cur4", ECPGst_normal, "declare scroll_cur4 scroll cursor for select id , t from t1 order by id", ECPGt_EOIT, ECPGt_EORT);
 #line 497 "cursor-ra-fetch.pgc"
 
 if (sqlca.sqlcode < 0) sqlprint();}
