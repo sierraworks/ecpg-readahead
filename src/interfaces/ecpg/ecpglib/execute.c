@@ -104,6 +104,7 @@ free_statement(struct statement * stmt)
 	free_variable(stmt->outlist);
 	ecpg_free(stmt->command);
 	ecpg_free(stmt->name);
+	ecpg_free(stmt->oldlocale);
 	ecpg_free(stmt);
 }
 
@@ -1708,7 +1709,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	struct statement *stmt;
 	struct connection *con;
 	bool		status;
-	char	   *oldlocale;
 	enum ECPGttype type;
 	struct variable **list;
 	enum ECPG_statement_type statement_type = (enum ECPG_statement_type) st;
@@ -1725,7 +1725,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 
 	/* Make sure we do NOT honor the locale for numeric input/output */
 	/* since the database wants the standard decimal point */
-	oldlocale = ecpg_strdup(setlocale(LC_NUMERIC, NULL), lineno);
+	stmt->oldlocale = ecpg_strdup(setlocale(LC_NUMERIC, NULL), lineno);
 	setlocale(LC_NUMERIC, "C");
 
 #ifdef ENABLE_THREAD_SAFETY
@@ -1736,8 +1736,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 
 	if (!ecpg_init(con, connection_name, lineno))
 	{
-		setlocale(LC_NUMERIC, oldlocale);
-		ecpg_free(oldlocale);
+		setlocale(LC_NUMERIC, stmt->oldlocale);
 		free_statement(stmt);
 		return (false);
 	}
@@ -1766,8 +1765,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	{
 		if (!ecpg_auto_prepare(lineno, connection_name, compat, &prepname, query))
 		{
-			setlocale(LC_NUMERIC, oldlocale);
-			ecpg_free(oldlocale);
+			setlocale(LC_NUMERIC, stmt->oldlocale);
 			free_statement(stmt);
 			va_end(args);
 			return (false);
@@ -1798,8 +1796,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 		else
 		{
 			ecpg_raise(lineno, ECPG_INVALID_STMT, ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME, stmt->command);
-			setlocale(LC_NUMERIC, oldlocale);
-			ecpg_free(oldlocale);
+			setlocale(LC_NUMERIC, stmt->oldlocale);
 			free_statement(stmt);
 			va_end(args);
 			return (false);
@@ -1828,8 +1825,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 
 			if (!(var = (struct variable *) ecpg_alloc(sizeof(struct variable), lineno)))
 			{
-				setlocale(LC_NUMERIC, oldlocale);
-				ecpg_free(oldlocale);
+				setlocale(LC_NUMERIC, stmt->oldlocale);
 				free_statement(stmt);
 				va_end(args);
 				return false;
@@ -1886,8 +1882,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 			{
 				ecpg_raise(lineno, ECPG_INVALID_STMT, ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME, NULL);
 				ecpg_free(var);
-				setlocale(LC_NUMERIC, oldlocale);
-				ecpg_free(oldlocale);
+				setlocale(LC_NUMERIC, stmt->oldlocale);
 				free_statement(stmt);
 				va_end(args);
 				return false;
@@ -1909,10 +1904,9 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	/* are we connected? */
 	if (con == NULL || con->connection == NULL)
 	{
-		free_statement(stmt);
 		ecpg_raise(lineno, ECPG_NOT_CONN, ECPG_SQLSTATE_ECPG_INTERNAL_ERROR, (con) ? con->name : ecpg_gettext("<empty>"));
-		setlocale(LC_NUMERIC, oldlocale);
-		ecpg_free(oldlocale);
+		setlocale(LC_NUMERIC, stmt->oldlocale);
+		free_statement(stmt);
 		return false;
 	}
 
@@ -1920,11 +1914,10 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	ecpg_clear_auto_mem();
 
 	status = ecpg_execute(stmt);
-	free_statement(stmt);
 
 	/* and reset locale value so our application is not affected */
-	setlocale(LC_NUMERIC, oldlocale);
-	ecpg_free(oldlocale);
+	setlocale(LC_NUMERIC, stmt->oldlocale);
+	free_statement(stmt);
 
 	return (status);
 }

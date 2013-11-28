@@ -60,6 +60,7 @@ struct statement
 	bool		questionmarks;
 	struct variable *inlist;
 	struct variable *outlist;
+	char	   *oldlocale;
 };
 
 /* structure to store prepared statements for a connection */
