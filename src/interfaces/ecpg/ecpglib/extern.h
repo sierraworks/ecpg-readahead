@@ -78,14 +78,39 @@ struct prepared_statement
 	struct prepared_statement *next;
 };
 
+struct subxact_descriptor
+{
+	char	   *name;
+	struct subxact_descriptor *next;
+	int		level;
+};
+
+struct cursor_descriptor {
+	struct cursor_descriptor *next;
+
+	char	   *name;
+
+	/*
+	 * The cursor was created in this level of * (sub-)transaction.
+	 * 0: WITH HOLD, committed successfully in a previous transaction
+	 * 1: cursor declared in the toplevel transaction
+	 * >=2: cursor declared in a named SAVEPOINT at the specified level
+	 */
+	int		subxact_level;
+	bool		with_hold;
+};
+
 /* structure to store connections */
 struct connection
 {
 	char	   *name;
 	PGconn	   *connection;
 	bool		autocommit;
+	bool		client_side_error;
 	struct ECPGtype_information_cache *cache_head;
 	struct prepared_statement *prep_stmts;
+	struct subxact_descriptor *subxact_desc;
+	struct cursor_descriptor *cursor_desc;
 	struct connection *next;
 };
 
@@ -199,6 +224,8 @@ void		ecpg_set_compat_sqlda(int, struct sqlda_compat **, const PGresult *, int, 
 struct sqlda_struct *ecpg_build_native_sqlda(int, PGresult *, int, enum COMPAT_MODE);
 void		ecpg_set_native_sqlda(int, struct sqlda_struct **, const PGresult *, int, enum COMPAT_MODE);
 
+void		ecpg_commit_cursors(int lineno, struct connection * conn, bool rollback, int level);
+
 /* SQLSTATE values generated or processed by ecpglib (intentionally
  * not exported -- users should refer to the codes directly) */
 
@@ -214,9 +241,11 @@ void		ecpg_set_native_sqlda(int, struct sqlda_struct **, const PGresult *, int, 
 #define ECPG_SQLSTATE_NULL_VALUE_NO_INDICATOR_PARAMETER "22002"
 #define ECPG_SQLSTATE_ACTIVE_SQL_TRANSACTION		"25001"
 #define ECPG_SQLSTATE_NO_ACTIVE_SQL_TRANSACTION		"25P01"
+#define ECPG_SQLSTATE_IN_FAILED_SQL_TRANSACTION		"25P02"
 #define ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME	"26000"
 #define ECPG_SQLSTATE_INVALID_SQL_DESCRIPTOR_NAME	"33000"
-#define ECPG_SQLSTATE_INVALID_CURSOR_NAME	"34000"
+#define ECPG_SQLSTATE_INVALID_CURSOR_NAME		"34000"
+#define ECPG_SQLSTATE_S_E_INVALID_SPECIFICATION		"3B001"
 #define ECPG_SQLSTATE_SYNTAX_ERROR			"42601"
 #define ECPG_SQLSTATE_DATATYPE_MISMATCH		"42804"
 #define ECPG_SQLSTATE_DUPLICATE_CURSOR		"42P03"

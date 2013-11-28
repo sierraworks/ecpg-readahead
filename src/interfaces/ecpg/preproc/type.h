@@ -129,6 +129,8 @@ struct cursor
 	char	   *command;
 	char	   *connection;
 	bool		opened;
+	bool		with_hold;
+	enum ECPGttype	vartype;
 	struct arguments *argsinsert;
 	struct arguments *argsinsert_oos;
 	struct arguments *argsresult;

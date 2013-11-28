@@ -180,10 +180,27 @@ ecpg_raise(int line, int code, const char *sqlstate, const char *str)
 			break;
 
 		case ECPG_TRANS:
-			snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+			if (strcmp(sqlstate, ECPG_SQLSTATE_IN_FAILED_SQL_TRANSACTION) == 0)
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
 			/*------
 			   translator: this string will be truncated at 149 characters expanded.  */
-			ecpg_gettext("error in transaction processing on line %d"), line);
+					 ecpg_gettext("current transaction is aborted, commands ignored until end of transaction block on line %d"), line);
+			}
+			else if (strcmp(sqlstate, ECPG_SQLSTATE_S_E_INVALID_SPECIFICATION) == 0)
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+			/*------
+			   translator: this string will be truncated at 149 characters expanded.  */
+					 ecpg_gettext("no such savepoint \"%s\" on line %d"), str, line);
+			}
+			else
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+  			/*------
+ 			   translator: this string will be truncated at 149 characters expanded.  */
+					 ecpg_gettext("error in transaction processing on line %d"), line);
+			}
 			break;
 
 		case ECPG_CONNECT:
@@ -191,6 +208,23 @@ ecpg_raise(int line, int code, const char *sqlstate, const char *str)
 			/*------
 			   translator: this string will be truncated at 149 characters expanded.  */
 					 ecpg_gettext("could not connect to database \"%s\" on line %d"), str, line);
+			break;
+
+		case ECPG_INVALID_CURSOR:
+			if (strcmp(sqlstate, ECPG_SQLSTATE_INVALID_CURSOR_NAME) == 0)
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+			/*------
+			   translator: this string will be truncated at 149 characters expanded.  */
+					 ecpg_gettext("invalid cursorname \"%s\" on line %d"), str, line);
+			}
+			else
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+			/*------
+			   translator: this string will be truncated at 149 characters expanded.  */
+					 ecpg_gettext("invalid cursor error %d on line %d"), code, line);
+			}
 			break;
 
 		default:

@@ -315,6 +315,9 @@ ECPGCursorStmt:  DECLARE cursor_name cursor_options CURSOR opt_hold FOR prepared
 			this->name = $2;
 			this->function = (current_function ? mm_strdup(current_function) : NULL);
 			this->connection = connection;
+			this->opened = false;
+			this->with_hold = (strncmp($5, "with ", 5) == 0);
+			this->vartype = current_cursor_vartype;
 			this->command =  cat_str(6, mm_strdup("declare"), cursor_marker, $3, mm_strdup("cursor"), $5, mm_strdup("for $1"));
 			this->argsresult = NULL;
 			this->argsresult_oos = NULL;
@@ -1662,7 +1665,12 @@ char_civar: char_variable
 			char *ptr = strstr($1, ".arr");
 
 			if (ptr) /* varchar, we need the struct name here, not the struct element */
+			{
 				*ptr = '\0';
+				current_cursor_vartype = ECPGt_varchar;
+			}
+			else
+				current_cursor_vartype = ECPGt_char;
 			add_variable_to_head(&argsinsert, find_variable($1), &no_indicator);
 			$$ = $1;
 		}

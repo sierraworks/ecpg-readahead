@@ -125,10 +125,28 @@ static char *ecpg_statement_type_name[] = {
 	"ECPGst_prepnormal"
 };
 
-void
-output_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+static void output_cursor_name(struct cursor *ptr)
 {
-	fprintf(yyout, "{ ECPGdo(__LINE__, %d, %d, %s, %d, ", compat, force_indicator, connection ? connection : "NULL", questionmarks);
+	if (current_cursor[0] == ':')
+	{
+		char *curname = current_cursor + 1;
+
+		fputs(curname, yyout);
+		if (ptr->vartype == ECPGt_varchar)
+			fputs(".arr", yyout);
+		fputs(", ", yyout);
+	}
+	else
+	{
+		fputs("\"", yyout);
+		output_escaped_str(current_cursor, false);
+		fputs("\", ", yyout);
+	}
+}
+
+static void
+output_statement_epilogue(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+{
 	if (st == ECPGst_execute || st == ECPGst_exec_immediate)
 	{
 		fprintf(yyout, "%s, %s, ", ecpg_statement_type_name[st], stmt);
@@ -153,8 +171,20 @@ output_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
 
 	whenever_action(whenever_mode | 2);
 	free(stmt);
+	if (current_cursor)
+	{
+		free(current_cursor);
+		current_cursor = NULL;
+	}
 	if (connection != NULL)
 		free(connection);
+}
+
+void
+output_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+{
+	fprintf(yyout, "{ ECPGdo(__LINE__, %d, %d, %s, %d, ", compat, force_indicator, connection ? connection : "NULL", questionmarks);
+	output_statement_epilogue(stmt, whenever_mode, st);
 }
 
 void
@@ -189,6 +219,46 @@ output_deallocate_prepare_statement(char *name)
 	free(name);
 	if (connection != NULL)
 		free(connection);
+}
+
+void
+output_open_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+{
+	struct cursor *ptr = get_cursor(current_cursor);
+
+	fprintf(yyout, "{ ECPGopen(__LINE__, %d, %d, %s, %d, %d, ", compat, force_indicator, connection ? connection : "NULL", questionmarks, ptr->with_hold);
+	output_cursor_name(ptr);
+	output_statement_epilogue(stmt, whenever_mode, st);
+}
+
+void
+output_fetch_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+{
+	struct cursor *ptr = get_cursor(current_cursor);
+
+	fprintf(yyout, "{ ECPGfetch(__LINE__, %d, %d, %s, %d, ", compat, force_indicator, connection ? connection : "NULL", questionmarks);
+	output_cursor_name(ptr);
+	output_statement_epilogue(stmt, whenever_mode, st);
+}
+
+void
+output_cursor_dml_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+{
+	struct cursor *ptr = get_cursor(current_cursor);
+
+	fprintf(yyout, "{ ECPGcursor_dml(__LINE__, %d, %d, %s, %d, ", compat, force_indicator, connection ? connection : "NULL", questionmarks);
+	output_cursor_name(ptr);
+	output_statement_epilogue(stmt, whenever_mode, st);
+}
+
+void
+output_close_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+{
+	struct cursor *ptr = get_cursor(current_cursor);
+
+	fprintf(yyout, "{ ECPGclose(__LINE__, %d, %d, %s, %d, ", compat, force_indicator, connection ? connection : "NULL", questionmarks);
+	output_cursor_name(ptr);
+	output_statement_epilogue(stmt, whenever_mode, st);
 }
 
 static void

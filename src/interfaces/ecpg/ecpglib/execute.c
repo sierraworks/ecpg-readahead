@@ -1866,6 +1866,13 @@ ecpg_do_prologue(int lineno, const int compat, const int force_indicator,
 		return (false);
 	}
 
+	if (con->client_side_error)
+	{
+		ecpg_do_epilogue(stmt);
+		ecpg_raise(lineno, ECPG_TRANS, ECPG_SQLSTATE_IN_FAILED_SQL_TRANSACTION, NULL);
+		return false;
+	}
+
 	/*
 	 * create a list of variables The variables are listed with input
 	 * variables preceding outputvariables The end of each group is marked by

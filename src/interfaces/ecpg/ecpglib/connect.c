@@ -475,6 +475,9 @@ ECPGconnect(int lineno, int c, const char *name, const char *user, const char *p
 
 	this->cache_head = NULL;
 	this->prep_stmts = NULL;
+	this->subxact_desc = NULL;
+	this->cursor_desc = NULL;
+	this->client_side_error = false;
 
 	if (all_connections == NULL)
 		this->next = NULL;

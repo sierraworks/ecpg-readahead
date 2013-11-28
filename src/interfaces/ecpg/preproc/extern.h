@@ -30,6 +30,8 @@ extern int	braces_open,
 			struct_level,
 			ecpg_internal_var;
 extern char *current_function;
+extern char *current_cursor;
+enum ECPGttype current_cursor_vartype;
 extern char *descriptor_index;
 extern char *descriptor_name;
 extern char *connection;
@@ -67,6 +69,10 @@ extern void output_statement(char *, int, enum ECPG_statement_type);
 extern void output_prepare_statement(char *, char *);
 extern void output_deallocate_prepare_statement(char *);
 extern void output_simple_statement(char *);
+extern void output_open_statement(char *, int, enum ECPG_statement_type);
+extern void output_fetch_statement(char *, int, enum ECPG_statement_type);
+extern void output_cursor_dml_statement(char *, int, enum ECPG_statement_type);
+extern void output_close_statement(char *, int, enum ECPG_statement_type);
 extern char *hashline_number(void);
 extern int	base_yyparse(void);
 extern int	base_yylex(void);
@@ -104,6 +110,7 @@ extern void scanner_init(const char *);
 extern void parser_init(void);
 extern void scanner_finish(void);
 extern int	filtered_base_yylex(void);
+extern struct cursor *get_cursor(const char *);
 
 /* return codes */
 

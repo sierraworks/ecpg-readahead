@@ -15,7 +15,7 @@ ECPG: stmtClosePortalStmt block
 			}
 		}
 
-		output_statement($1, 0, ECPGst_normal);
+		output_close_statement($1, 0, ECPGst_normal);
 	}
 ECPG: stmtDeallocateStmt block
 	{
@@ -24,13 +24,20 @@ ECPG: stmtDeallocateStmt block
 ECPG: stmtDeclareCursorStmt block
 	{ output_simple_statement($1); }
 ECPG: stmtDiscardStmt block
-ECPG: stmtFetchStmt block
 	{ output_statement($1, 1, ECPGst_normal); }
-ECPG: stmtDeleteStmt block
+ECPG: stmtFetchStmt block
+	{ output_fetch_statement($1, 1, ECPGst_normal); }
 ECPG: stmtInsertStmt block
 ECPG: stmtSelectStmt block
-ECPG: stmtUpdateStmt block
 	{ output_statement($1, 1, ECPGst_prepnormal); }
+ECPG: stmtDeleteStmt block
+ECPG: stmtUpdateStmt block
+	{
+		if (current_cursor)
+			output_cursor_dml_statement($1, 1, ECPGst_prepnormal);
+		else
+			output_statement($1, 1, ECPGst_prepnormal);
+	}
 ECPG: stmtExecuteStmt block
 	{ output_statement($1, 1, ECPGst_execute); }
 ECPG: stmtPrepareStmt block
@@ -42,10 +49,87 @@ ECPG: stmtPrepareStmt block
 	}
 ECPG: stmtTransactionStmt block
 	{
-		fprintf(yyout, "{ ECPGtrans(__LINE__, %s, \"%s\");", connection ? connection : "NULL", $1);
+		char *tr_name;
+
+		if (transact_name)
+		{
+			tr_name = mm_alloc(4 + strlen(transact_name));
+			sprintf(tr_name, "\"%s\"", transact_name);
+		}
+		else
+			tr_name = mm_strdup("NULL");
+
+		fprintf(yyout, "{ ECPGtrans(__LINE__, %s, \"%s\", %d, %d, %d, %s);",
+					connection ? connection : "NULL",
+					$1,
+					transact_prepared,
+					transact_start,
+					transact_rollback,
+					tr_name);
+		free(tr_name);
+		free(transact_name);
+		transact_name = NULL;
 		whenever_action(2);
 		free($1);
 	}
+ECPG: TransactionStmtABORT_Popt_transaction addon
+ECPG: TransactionStmtROLLBACKopt_transaction addon
+		transact_prepared = false;
+		transact_start = false;
+		transact_rollback = true;
+		transact_name = NULL;
+ECPG: TransactionStmtBEGIN_Popt_transactiontransaction_mode_list_or_empty addon
+ECPG: TransactionStmtSTARTTRANSACTIONtransaction_mode_list_or_empty addon
+		transact_prepared = false;
+		transact_start = true;
+		transact_rollback = false;
+		transact_name = NULL;
+ECPG: TransactionStmtCOMMITopt_transaction addon
+ECPG: TransactionStmtEND_Popt_transaction addon
+		transact_prepared = false;
+		transact_start = false;
+		transact_rollback = false;
+		transact_name = NULL;
+ECPG: TransactionStmtSAVEPOINTColId addon
+		transact_prepared = false;
+		transact_start = true;
+		transact_rollback = false;
+		transact_name = mm_strdup($2);
+ECPG: TransactionStmtRELEASESAVEPOINTColId addon
+		transact_prepared = false;
+		transact_start = false;
+		transact_rollback = false;
+		transact_name = mm_strdup($3);
+ECPG: TransactionStmtRELEASEColId addon
+		transact_prepared = false;
+		transact_start = false;
+		transact_rollback = false;
+		transact_name = mm_strdup($2);
+ECPG: TransactionStmtROLLBACKopt_transactionTOSAVEPOINTColId addon
+		transact_prepared = false;
+		transact_start = false;
+		transact_rollback = true;
+		transact_name = mm_strdup($5);
+ECPG: TransactionStmtROLLBACKopt_transactionTOColId addon
+		transact_prepared = false;
+		transact_start = false;
+		transact_rollback = true;
+		transact_name = mm_strdup($4);
+ECPG: TransactionStmtPREPARETRANSACTIONSconst addon
+		transact_prepared = true;
+		transact_start = true;
+		transact_rollback = false;
+		transact_name = NULL;
+ECPG: TransactionStmtCOMMITPREPAREDSconst addon
+		transact_prepared = true;
+		transact_start = false;
+		transact_rollback = false;
+		transact_name = NULL;
+ECPG: TransactionStmtROLLBACKPREPAREDSconst addon
+		transact_prepared = true;
+		transact_start = false;
+		transact_rollback = true;
+		transact_name = NULL;
 ECPG: stmtViewStmt rule
 	| ECPGAllocateDescr
 	{
@@ -132,7 +216,7 @@ ECPG: stmtViewStmt rule
 		if ((ptr = add_additional_variables($1, true)) != NULL)
 		{
 			connection = ptr->connection ? mm_strdup(ptr->connection) : NULL;
-			output_statement(mm_strdup(ptr->command), 0, ECPGst_normal);
+			output_open_statement(mm_strdup(ptr->command), 0, ECPGst_normal);
 			ptr->opened = true;
 		}
 	}
@@ -190,6 +274,16 @@ ECPG: stmtViewStmt rule
 ECPG: where_or_current_clauseWHERECURRENT_POFcursor_name block
 	{
 		char *cursor_marker = $4[0] == ':' ? mm_strdup("$0") : $4;
+		struct cursor *ptr;
+
+		for (ptr = cur; ptr != NULL; ptr = ptr->next)
+		{
+			if (strcmp(ptr->name, $4) == 0)
+				break;
+		}
+		if (!ptr)
+			mmfatal(PARSE_ERROR, "cursor \"%s\" does not exist", $4);
+
 		$$ = cat_str(2,mm_strdup("where current of"), cursor_marker);
 	}
 ECPG: CopyStmtCOPYopt_binaryqualified_nameopt_column_listopt_oidscopy_fromopt_programcopy_file_namecopy_delimiteropt_withcopy_options addon
@@ -262,13 +356,19 @@ ECPG: fetch_argsBACKWARDSignedIconstopt_from_incursor_name addon
 			free($2);
 			$2 = mm_strdup("$0");
 		}
-ECPG: cursor_namename rule
+ECPG: cursor_namename block
+		{
+			current_cursor = mm_strdup($1);
+			current_cursor_vartype = ECPGt_const;
+			$$ = $1;
+		}
 	| char_civar
 		{
 			char *curname = mm_alloc(strlen($1) + 2);
 			sprintf(curname, ":%s", $1);
 			free($1);
 			$1 = curname;
+			current_cursor = mm_strdup(curname);
 			$$ = $1;
 		}
 ECPG: PrepareStmtPREPAREprepared_nameprep_type_clauseASPreparableStmt block
@@ -310,6 +410,8 @@ ECPG: DeclareCursorStmtDECLAREcursor_namecursor_optionsCURSORopt_holdFORSelectSt
 		this->function = (current_function ? mm_strdup(current_function) : NULL);
 		this->connection = connection;
 		this->opened = false;
+		this->with_hold = (strncmp($5, "with ", 5) == 0);
+		this->vartype = current_cursor_vartype;
 		this->command =  cat_str(7, mm_strdup("declare"), cursor_marker, $3, mm_strdup("cursor"), $5, mm_strdup("for"), $7);
 		this->argsinsert = argsinsert;
 		this->argsinsert_oos = NULL;
