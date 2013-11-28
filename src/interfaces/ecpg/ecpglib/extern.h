@@ -31,6 +31,7 @@ enum ARRAY_TYPE
 
 #define LOOP_FORWARD	(1)
 #define LOOP_BACKWARD	(-1)
+#define MAX_CACHE_MISS	(3)
 
 /* A generic varchar type. */
 struct ECPGgeneric_varchar
@@ -100,6 +101,24 @@ struct cursor_descriptor {
 	int		subxact_level;
 	bool		with_hold;
 	enum ECPG_cursor_scroll scrollable;
+
+	PGresult   *res;
+	long		readahead;
+	int64		cache_start_pos;
+	bool		backward;
+
+	bool		atstart;
+	bool		atend;
+	int64		pos;
+
+	bool		backend_atstart;
+	bool		backend_atend;
+	int64		backend_pos;
+
+	int64		mkbpos;
+	bool		mkbpos_is_last;
+
+	int		cache_miss;
 };
 
 /* structure to store connections */
@@ -241,6 +260,7 @@ void		ecpg_commit_cursors(int lineno, struct connection * conn, bool rollback, i
 #define ECPG_SQLSTATE_TRANSACTION_RESOLUTION_UNKNOWN	"08007"
 #define ECPG_SQLSTATE_CARDINALITY_VIOLATION "21000"
 #define ECPG_SQLSTATE_NULL_VALUE_NO_INDICATOR_PARAMETER "22002"
+#define ECPG_SQLSTATE_INVALID_CURSOR_STATE		"24000"
 #define ECPG_SQLSTATE_ACTIVE_SQL_TRANSACTION		"25001"
 #define ECPG_SQLSTATE_NO_ACTIVE_SQL_TRANSACTION		"25P01"
 #define ECPG_SQLSTATE_IN_FAILED_SQL_TRANSACTION		"25P02"

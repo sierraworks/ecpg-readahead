@@ -243,15 +243,16 @@ output_open_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st
 {
 	struct cursor *ptr = get_cursor(current_cursor);
 
-	fprintf(yyout, "{ ECPGopen(__LINE__, %d, %d, %s, %d, %d, %s, ",
+	fprintf(yyout, "{ ECPGopen(__LINE__, %d, %d, %s, %d, %d, %s, %ld, ",
 						compat, force_indicator, connection ? connection : "NULL", questionmarks,
-						ptr->with_hold, ecpg_cursor_scroll_name[ptr->scrollable]);
+						ptr->with_hold, ecpg_cursor_scroll_name[ptr->scrollable],
+						ptr->fetch_readahead);
 	output_cursor_name(ptr);
 	output_statement_epilogue(stmt, whenever_mode, st);
 }
 
 void
-output_fetch_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st)
+output_fetch_statement(char *stmt, int whenever_mode, enum ECPG_statement_type st, bool move)
 {
 	struct cursor *ptr = get_cursor(current_cursor);
 	char	   *amount;
@@ -265,9 +266,9 @@ output_fetch_statement(char *stmt, int whenever_mode, enum ECPG_statement_type s
 	else
 		amount = mm_strdup("NULL");
 
-	fprintf(yyout, "{ ECPGfetch(__LINE__, %d, %d, %s, %d, %s, %s, ",
+	fprintf(yyout, "{ ECPGfetch(__LINE__, %d, %d, %s, %d, %s, %s, %d, ",
 						compat, force_indicator, connection ? connection : "NULL", questionmarks,
-						ecpg_cursor_direction_name[current_cursor_direction], amount);
+						ecpg_cursor_direction_name[current_cursor_direction], amount, move);
 	output_cursor_name(ptr);
 	output_statement_epilogue(stmt, whenever_mode, st);
 	free(amount);

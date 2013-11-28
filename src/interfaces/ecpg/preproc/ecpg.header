@@ -37,6 +37,7 @@ int braces_open; /* brace level counter */
 char *current_function;
 char *current_cursor = NULL;
 enum ECPGttype current_cursor_vartype;
+bool current_cursor_move;
 enum ECPG_cursor_direction current_cursor_direction;
 enum ECPG_cursor_scroll current_cursor_scrollable = ECPGcs_unspecified;
 char *current_cursor_amount = NULL;

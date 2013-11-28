@@ -26,7 +26,7 @@ ECPG: stmtDeclareCursorStmt block
 ECPG: stmtDiscardStmt block
 	{ output_statement($1, 1, ECPGst_normal); }
 ECPG: stmtFetchStmt block
-	{ output_fetch_statement($1, 1, ECPGst_normal); }
+	{ output_fetch_statement($1, 1, ECPGst_normal, current_cursor_move); }
 ECPG: stmtInsertStmt block
 ECPG: stmtSelectStmt block
 	{ output_statement($1, 1, ECPGst_prepnormal); }
@@ -505,7 +505,7 @@ ECPG: PrepareStmtPREPAREprepared_nameprep_type_clauseASPreparableStmt block
 	}
 ECPG: ExecuteStmtEXECUTEprepared_nameexecute_param_clauseexecute_rest block
 	{ $$ = $2; }
-ECPG: DeclareCursorStmtDECLAREcursor_namecursor_optionsCURSORopt_holdFORSelectStmt block
+ECPG: DeclareCursorStmtDECLAREcursor_namecursor_optionsopt_readaheadCURSORopt_holdFORSelectStmt block
 	{
 		struct cursor *ptr, *this;
 		char *cursor_marker = $2[0] == ':' ? mm_strdup("$0") : mm_strdup($2);
@@ -530,17 +530,27 @@ ECPG: DeclareCursorStmtDECLAREcursor_namecursor_optionsCURSORopt_holdFORSelectSt
 		this->function = (current_function ? mm_strdup(current_function) : NULL);
 		this->connection = connection;
 		this->opened = false;
-		this->with_hold = (strncmp($5, "with ", 5) == 0);
+		this->with_hold = (strncmp($6, "with ", 5) == 0);
+		if (strcmp($4, "default") == 0)
+			this->fetch_readahead = fetch_readahead;
+		else
+		{
+			int	this_readahead = atoi($4);
+
+			if (this_readahead < 1)
+				mmerror(PARSE_ERROR, ET_ERROR, "cursor readahead cannot be less than 1");
+			this->fetch_readahead = atoi($4);
+		}
 		this->vartype = current_cursor_vartype;
 		if (current_cursor_scrollable == ECPGcs_unspecified)
 		{
 			this->scrollable = ECPGcs_no_scroll;
-			this->command =  cat_str(8, mm_strdup("declare"), cursor_marker, $3, mm_strdup("no scroll"), mm_strdup("cursor"), $5, mm_strdup("for"), $7);
+			this->command =  cat_str(8, mm_strdup("declare"), cursor_marker, $3, mm_strdup("no scroll"), mm_strdup("cursor"), $6, mm_strdup("for"), $8);
 		}
 		else
 		{
 			this->scrollable = current_cursor_scrollable;
-			this->command =  cat_str(7, mm_strdup("declare"), cursor_marker, $3, mm_strdup("cursor"), $5, mm_strdup("for"), $7);
+			this->command =  cat_str(7, mm_strdup("declare"), cursor_marker, $3, mm_strdup("cursor"), $6, mm_strdup("for"), $8);
 			current_cursor_scrollable = ECPGcs_unspecified;
 		}
 		this->argsinsert = argsinsert;
@@ -639,15 +649,26 @@ ECPG: VariableShowStmtSHOWALL block
 		mmerror(PARSE_ERROR, ET_ERROR, "SHOW ALL is not implemented");
 		$$ = EMPTY;
 	}
-ECPG: FetchStmtMOVEfetch_args rule
+ECPG: FetchStmtFETCHfetch_args block
+	{
+		current_cursor_move = false;
+		$$ = cat_str(2,mm_strdup("fetch"),$2);
+	}
+ECPG: FetchStmtMOVEfetch_args block
+	{
+		current_cursor_move = true;
+		$$ = cat_str(2,mm_strdup("move"),$2);
+	}
 	| FETCH fetch_args ecpg_fetch_into
 	{
+		current_cursor_move = false;
 		$$ = cat2_str(mm_strdup("fetch"), $2);
 	}
 	| FETCH FORWARD cursor_name opt_ecpg_fetch_into
 	{
 		char *cursor_marker = $3[0] == ':' ? mm_strdup("$0") : $3;
 		add_additional_variables($3, false);
+		current_cursor_move = false;
 		current_cursor_direction = ECPGc_forward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("fetch forward"), cursor_marker);
@@ -656,6 +677,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $4[0] == ':' ? mm_strdup("$0") : $4;
 		add_additional_variables($4, false);
+		current_cursor_move = false;
 		current_cursor_direction = ECPGc_forward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("fetch forward from"), cursor_marker);
@@ -664,6 +686,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $3[0] == ':' ? mm_strdup("$0") : $3;
 		add_additional_variables($3, false);
+		current_cursor_move = false;
 		current_cursor_direction = ECPGc_backward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("fetch backward"), cursor_marker);
@@ -672,6 +695,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $4[0] == ':' ? mm_strdup("$0") : $4;
 		add_additional_variables($4, false);
+		current_cursor_move = false;
 		current_cursor_direction = ECPGc_backward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("fetch backward from"), cursor_marker);
@@ -680,6 +704,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $3[0] == ':' ? mm_strdup("$0") : $3;
 		add_additional_variables($3, false);
+		current_cursor_move = true;
 		current_cursor_direction = ECPGc_forward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("move forward"), cursor_marker);
@@ -688,6 +713,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $4[0] == ':' ? mm_strdup("$0") : $4;
 		add_additional_variables($4, false);
+		current_cursor_move = true;
 		current_cursor_direction = ECPGc_forward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("move forward from"), cursor_marker);
@@ -696,6 +722,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $3[0] == ':' ? mm_strdup("$0") : $3;
 		add_additional_variables($3, false);
+		current_cursor_move = true;
 		current_cursor_direction = ECPGc_backward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("move backward"), cursor_marker);
@@ -704,6 +731,7 @@ ECPG: FetchStmtMOVEfetch_args rule
 	{
 		char *cursor_marker = $4[0] == ':' ? mm_strdup("$0") : $4;
 		add_additional_variables($4, false);
+		current_cursor_move = true;
 		current_cursor_direction = ECPGc_backward;
 		current_cursor_amount = mm_strdup("1");
 		$$ = cat_str(2, mm_strdup("move backward from"), cursor_marker);

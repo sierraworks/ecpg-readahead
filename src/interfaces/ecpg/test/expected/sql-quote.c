@@ -162,7 +162,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 43 "quote.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "C", ECPGst_normal, "declare C no scroll cursor for select * from \"My_Table\"", ECPGt_EOIT, ECPGt_EORT);
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, "C", ECPGst_normal, "declare C no scroll cursor for select * from \"My_Table\"", ECPGt_EOIT, ECPGt_EORT);
 #line 45 "quote.pgc"
 
 if (sqlca.sqlwarn[0] == 'W') sqlprint();
@@ -178,7 +178,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
   while (true)
   {
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "C", ECPGst_normal, "fetch C", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", 0, "C", ECPGst_normal, "fetch C", ECPGt_EOIT, 
 	ECPGt_int,&(i),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char,(var),(long)25,(long)1,(25)*sizeof(char), 

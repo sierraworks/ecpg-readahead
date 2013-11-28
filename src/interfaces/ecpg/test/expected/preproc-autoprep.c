@@ -133,7 +133,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 35 "autoprep.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "C", ECPGst_normal, "declare C no scroll cursor for select Item1 from T", ECPGt_EOIT, ECPGt_EORT);
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, "C", ECPGst_normal, "declare C no scroll cursor for select Item1 from T", ECPGt_EOIT, ECPGt_EORT);
 #line 37 "autoprep.pgc"
 
 if (sqlca.sqlwarn[0] == 'W') sqlprint();
@@ -143,7 +143,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 37 "autoprep.pgc"
 
 
-  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "C", ECPGst_normal, "fetch 1 in C", ECPGt_EOIT, 
+  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", 0, "C", ECPGst_normal, "fetch 1 in C", ECPGt_EOIT, 
 	ECPGt_int,&(i),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);
 #line 39 "autoprep.pgc"
@@ -180,7 +180,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 46 "autoprep.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "cur1", ECPGst_normal, "declare cur1 no scroll cursor for $1", 
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, "cur1", ECPGst_normal, "declare cur1 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "stmt1", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 48 "autoprep.pgc"
@@ -199,7 +199,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
   i = 0;
   while (1)
   {
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "cur1", ECPGst_normal, "fetch cur1", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", 0, "cur1", ECPGst_normal, "fetch cur1", ECPGt_EOIT, 
 	ECPGt_int,&(item1),(long)1,(long)1,sizeof(int), 
 	ECPGt_int,&(ind1),(long)1,(long)1,sizeof(int), ECPGt_EORT);
 #line 55 "autoprep.pgc"

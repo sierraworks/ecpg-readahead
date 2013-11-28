@@ -130,6 +130,7 @@ struct cursor
 	char	   *connection;
 	bool		opened;
 	bool		with_hold;
+	long		fetch_readahead;
 	enum ECPGttype	vartype;
 	enum ECPG_cursor_scroll scrollable;
 	struct arguments *argsinsert;

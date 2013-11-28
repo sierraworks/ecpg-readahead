@@ -158,7 +158,7 @@ if (sqlca.sqlcode < 0) dosqlprint ( );}
 
 	while (1)
 	{
-		{ ECPGfetch(__LINE__, 1, 1, NULL, 0, ECPGc_forward, "1", "c", ECPGst_normal, "fetch forward c", ECPGt_EOIT, 
+		{ ECPGfetch(__LINE__, 1, 1, NULL, 0, ECPGc_forward, "1", 0, "c", ECPGst_normal, "fetch forward c", ECPGt_EOIT, 
 	ECPGt_int,&(i),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_decimal,&(j),(long)1,(long)1,sizeof(decimal), 
@@ -244,7 +244,7 @@ if (sqlca.sqlcode < 0) dosqlprint ( );}
 
 static void openit(void)
 {
-	{ ECPGopen(__LINE__, 1, 1, NULL, 0, 0, ECPGcs_no_scroll, "c", ECPGst_normal, "declare c no scroll cursor for select * from test where i <= $1 ", 
+	{ ECPGopen(__LINE__, 1, 1, NULL, 0, 0, ECPGcs_no_scroll, 1, "c", ECPGst_normal, "declare c no scroll cursor for select * from test where i <= $1 ", 
 	ECPGt_int,&(*( int  *)(ECPGget_var( 0))),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 95 "test_informix.pgc"

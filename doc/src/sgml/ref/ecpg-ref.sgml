@@ -166,6 +166,15 @@ PostgreSQL documentation
          </para>
          </listitem>
         </varlistentry>
+        <varlistentry>
+         <term><option>readahead=<replaceable>number</replaceable></option></term>
+         <listitem>
+          <para>
+           Turn on cursor readahead by default using <replaceable>number</replaceable>
+           as readahead window size.
+          </para>
+         </listitem>
+        </varlistentry>
        </variablelist></para>
      </listitem>
     </varlistentry>

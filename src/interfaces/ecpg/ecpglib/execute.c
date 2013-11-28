@@ -15,6 +15,7 @@
 
 #define POSTGRES_ECPG_INTERNAL
 #include "postgres_fe.h"
+#include "libpq-fe.h"
 
 #include <locale.h>
 #include <float.h>
@@ -1093,6 +1094,8 @@ ecpg_free_params(struct statement *stmt, bool print)
 		ecpg_free(stmt->paramvalues[n]);
 	}
 	ecpg_free(stmt->paramvalues);
+	stmt->nparams = 0;
+	stmt->paramvalues = NULL;
 }
 
 
@@ -1524,6 +1527,12 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 	PGnotify   *notify;
 	struct sqlca_t *sqlca = ECPGget_sqlca();
 
+	if (stmt->results == NULL)
+	{
+		ecpg_log("ecpg_process_output on line %d: stmt->results is NULL, ignoring\n", stmt->lineno);
+		return true;
+	}
+
 	var = stmt->outlist;
 	switch (PQresultStatus(stmt->results))
 	{
@@ -1581,8 +1590,26 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 					{
 						if (desc->result)
 							PQclear(desc->result);
-						desc->result = stmt->results;
-						clear_result = false;
+						/*
+						 * Copy the SQL DESCRIPTOR's new results
+						 * from the current one. This allows data
+						 * in the descriptor to survive changes
+						 * in the cursor readahead cache and to
+						 * avoid overriding "clear_result".
+						 */
+						desc->result = PQcopyResult(stmt->results,
+										PG_COPYRES_ATTRS |
+										PG_COPYRES_TUPLES |
+										PG_COPYRES_EVENTS |
+										PG_COPYRES_NOTICEHOOKS);
+						if (desc->result == NULL)
+						{
+							ecpg_raise(stmt->lineno, ECPG_OUT_OF_MEMORY,
+										ECPG_SQLSTATE_ECPG_OUT_OF_MEMORY,
+										NULL);
+							status = false;
+							break;
+						}
 						ecpg_log("ecpg_process_output on line %d: putting result (%d tuples) into descriptor %s\n",
 								 stmt->lineno, ntuples, (const char *) var->pointer);
 					}

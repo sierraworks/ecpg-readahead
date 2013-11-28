@@ -140,7 +140,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 50 "oldexec.pgc"
 
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 1, 0, ECPGcs_no_scroll, "CUR", ECPGst_normal, "declare CUR no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 1, 0, ECPGcs_no_scroll, 1, "CUR", ECPGst_normal, "declare CUR no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "f", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 52 "oldexec.pgc"
@@ -148,7 +148,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 if (sqlca.sqlcode < 0) sqlprint();}
 #line 52 "oldexec.pgc"
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 1, ECPGc_forward, "8", "CUR", ECPGst_normal, "fetch 8 in CUR", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 1, ECPGc_forward, "8", 0, "CUR", ECPGst_normal, "fetch 8 in CUR", ECPGt_EOIT, 
 	ECPGt_char,(name),(long)8,(long)8,(8)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_int,(amount),(long)1,(long)8,sizeof(int), 
@@ -199,7 +199,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 71 "oldexec.pgc"
 
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 1, 0, ECPGcs_no_scroll, "CUR3", ECPGst_normal, "declare CUR3 no scroll cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 1, 0, ECPGcs_no_scroll, 1, "CUR3", ECPGst_normal, "declare CUR3 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "f", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_const,"1",(long)1,(long)1,strlen("1"), 
@@ -209,7 +209,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 if (sqlca.sqlcode < 0) sqlprint();}
 #line 73 "oldexec.pgc"
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 1, ECPGc_forward, "1", "CUR3", ECPGst_normal, "fetch in CUR3", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 1, ECPGc_forward, "1", 0, "CUR3", ECPGst_normal, "fetch in CUR3", ECPGt_EOIT, 
 	ECPGt_char,(name),(long)8,(long)8,(8)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_int,(amount),(long)1,(long)8,sizeof(int), 

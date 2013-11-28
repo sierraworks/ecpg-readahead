@@ -458,6 +458,24 @@ EXEC SQL COMMIT;
    details.
   </para>
 
+  <para>
+   ECPG does cursor accounting in its runtime library and this makes possible
+   to do readahead to improve performance of programs that use single-row FETCH
+   statements. The default is 1 row window size, i.e. no readahead.
+   Option <option>-r readahead=number</option> on the ECPG command line modifies
+   the default readahead window size for all cursors. Explicit
+   <literal>READAHEAD number</literal> sets the readahead window size for
+   the specified cursor.
+  </para>
+
+  <para>
+   To execute an UPDATE or DELETE statement bearing the <literal>WHERE CURRENT OF</literal>
+   clause, ECPG may first execute an implicit MOVE to synchronize the server
+   cursor position with the local cursor position.  This can reduce or
+   eliminate the performance benefit of readahead for affected cursors.
+   For this reason, <literal>READAHEAD 1</literal> is recommended.
+  </para>
+
    <note>
     <para>
      The ECPG <command>DECLARE</command> command does not actually
@@ -465,6 +483,18 @@ EXEC SQL COMMIT;
      cursor is opened in the backend (using the
      backend's <command>DECLARE</command> command) at the point when
      the <command>OPEN</command> command is executed.
+    </para>
+   </note>
+   <note>
+    <para>
+     If an ECPG application written for earlier versions of PostgreSQL uses its
+     own readahead (e.g. <command>FETCH N FROM cursorname</command>) then it's
+     recommended to recompile using option <option>-r readahead=number</option>
+     where the specified number equals to custom readahead size or an integer
+     multiple of it. Alternatively, the <command>DECLARE</command> statement can
+     be modified with the <literal>READAHEAD number</literal> clause. Without this,
+     the application performance will be worse because the readahead code in the
+     ECPG runtime uses single row <command>FETCH</command> statements.
     </para>
    </note>
   </sect2>
@@ -5280,6 +5310,10 @@ while (1)
        This error code may occur in the following conditions.
       </para>
       <para>
+       The readahead window size you are trying to use is invalid.
+       (SQLSTATE 24000)
+      </para>
+      <para>
        The cursor name you are trying to use is invalid.
        (SQLSTATE 34000)
       </para>
@@ -6607,8 +6641,8 @@ EXEC SQL DEALLOCATE DESCRIPTOR mydesc;
 
    <refsynopsisdiv>
 <synopsis>
-DECLARE <replaceable class="PARAMETER">cursor_name</replaceable> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ] CURSOR [ { WITH | WITHOUT } HOLD ] FOR <replaceable class="PARAMETER">prepared_name</replaceable>
-DECLARE <replaceable class="PARAMETER">cursor_name</replaceable> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ] CURSOR [ { WITH | WITHOUT } HOLD ] FOR <replaceable class="PARAMETER">query</replaceable>
+DECLARE <replaceable class="PARAMETER">cursor_name</replaceable> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ] [ READAHEAD number ] CURSOR [ { WITH | WITHOUT } HOLD ] FOR <replaceable class="PARAMETER">prepared_name</replaceable>
+DECLARE <replaceable class="PARAMETER">cursor_name</replaceable> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ] [ READAHEAD number ] CURSOR [ { WITH | WITHOUT } HOLD ] FOR <replaceable class="PARAMETER">query</replaceable>
 </synopsis>
    </refsynopsisdiv>
 
@@ -6663,11 +6697,30 @@ DECLARE <replaceable class="PARAMETER">cursor_name</replaceable> [ BINARY ] [ IN
       </listitem>
      </varlistentry>
     </variablelist>
+   </refsect1>
+
+   <refsect1>
+    <title>ECPG-specific cursor options</title>
 
     <para>
-     For the meaning of the cursor options,
-     see <xref linkend="sql-declare">.
+     For the meaning of regular cursor options, see <xref linkend="sql-declare">.
     </para>
+
+    <variablelist>
+     <varlistentry>
+      <term><literal>READAHEAD number</literal></term>
+       <listitem>
+        <para>
+         The ECPG preprocessor and runtime library use client-side cursor
+         tracking and accounting. <literal>READAHEAD number</literal> sets
+         data readahead used during <command>FETCH</command>. This improves
+         performance for programs that use single-row <command>FETCH</command>
+         statements.
+        </para>
+       </listitem>
+     </varlistentry>
+    </variablelist>
+
    </refsect1>
 
    <refsect1>

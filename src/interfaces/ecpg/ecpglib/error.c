@@ -197,8 +197,8 @@ ecpg_raise(int line, int code, const char *sqlstate, const char *str)
 			else
 			{
 				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
-  			/*------
- 			   translator: this string will be truncated at 149 characters expanded.  */
+			/*------
+			   translator: this string will be truncated at 149 characters expanded.  */
 					 ecpg_gettext("error in transaction processing on line %d"), line);
 			}
 			break;
@@ -211,7 +211,14 @@ ecpg_raise(int line, int code, const char *sqlstate, const char *str)
 			break;
 
 		case ECPG_INVALID_CURSOR:
-			if (strcmp(sqlstate, ECPG_SQLSTATE_INVALID_CURSOR_NAME) == 0)
+			if (strcmp(sqlstate, ECPG_SQLSTATE_INVALID_CURSOR_STATE) == 0)
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+			/*------
+			   translator: this string will be truncated at 149 characters expanded.  */
+					 ecpg_gettext("invalid readahead window size for cursor \"%s\" on line %d"), str, line);
+			}
+			else if (strcmp(sqlstate, ECPG_SQLSTATE_INVALID_CURSOR_NAME) == 0)
 			{
 				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
 			/*------
@@ -221,7 +228,7 @@ ecpg_raise(int line, int code, const char *sqlstate, const char *str)
 			else if (strcmp(sqlstate, ECPG_SQLSTATE_OBJECT_NOT_IN_PREREQUISITE_STATE) == 0)
 			{
 				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
-			/*
+			/*------
 			   translator: this string will be truncated at 149 characters expanded.  */
 					 ecpg_gettext("cursor \"%s\" can only scan forward on line %d"), str, line);
 			}
