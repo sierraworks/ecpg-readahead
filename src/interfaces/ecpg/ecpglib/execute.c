@@ -1498,11 +1498,13 @@ ecpg_execute(struct statement * stmt)
  *	direction:	in this direction
  *	var_index:	start index in the user variable if it's an array
  *	clear_result:	PQclear() the result upon returning from this function
+ *	append_result:	the user variable is an SQL or SQLDA descriptor,
+ *			may already contain data, append to it.
  *
  * Returns success as boolean. Also an SQL error is raised in case of failure.
  */
 bool
-ecpg_process_output(struct statement * stmt, int start, int ntuples, int direction, int var_index, bool clear_result)
+ecpg_process_output(struct statement * stmt, int start, int ntuples, int direction, int var_index, bool clear_result, bool append_result)
 {
 	struct variable *var;
 	bool		status = false;
@@ -1514,6 +1516,7 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 	switch (PQresultStatus(stmt->results))
 	{
 			int			nfields,
+						tuples_left,
 						act_field;
 
 		case PGRES_TUPLES_OK:
@@ -1540,12 +1543,35 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 					status = false;
 				else
 				{
-					if (desc->result)
-						PQclear(desc->result);
-					desc->result = stmt->results;
-					clear_result = false;
-					ecpg_log("ecpg_process_output on line %d: putting result (%d tuples) into descriptor %s\n",
-							 stmt->lineno, ntuples, (const char *) var->pointer);
+					if (append_result && desc->result)
+					{
+						int		tuples_left, act_tuple, col,
+								row = PQntuples(desc->result);
+
+						for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction, row++)
+							for (col = 0; col < nfields; col++)
+							{
+								bool	isnull = PQgetisnull(stmt->results, act_tuple, col);
+
+								if (!PQsetvalue(desc->result, row, col,
+										isnull ? NULL : PQgetvalue(stmt->results, act_tuple, col),
+										isnull ? -1 : PQgetlength(stmt->results, act_tuple, col)))
+								{
+									ecpg_raise(stmt->lineno, ECPG_OUT_OF_MEMORY, ECPG_SQLSTATE_ECPG_OUT_OF_MEMORY, NULL);
+									status = false;
+									break;
+								}
+							}
+					}
+					else
+					{
+						if (desc->result)
+							PQclear(desc->result);
+						desc->result = stmt->results;
+						clear_result = false;
+						ecpg_log("ecpg_process_output on line %d: putting result (%d tuples) into descriptor %s\n",
+								 stmt->lineno, ntuples, (const char *) var->pointer);
+					}
 				}
 				var = var->next;
 			}
@@ -1559,17 +1585,26 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 					struct sqlda_compat *sqlda_new;
 					int			i;
 
-					/*
-					 * If we are passed in a previously existing sqlda (chain)
-					 * then free it.
-					 */
-					while (sqlda)
+					if (append_result)
 					{
-						sqlda_new = sqlda->desc_next;
-						free(sqlda);
-						sqlda = sqlda_new;
+						sqlda_last = sqlda;
+						while (sqlda_last && sqlda_last->desc_next)
+							sqlda_last = sqlda_last->desc_next;
 					}
-					*_sqlda = sqlda = sqlda_last = sqlda_new = NULL;
+					else
+					{
+						/*
+						 * If we are passed in a previously existing sqlda (chain)
+						 * then free it.
+						 */
+						while (sqlda)
+						{
+							sqlda_new = sqlda->desc_next;
+							free(sqlda);
+							sqlda = sqlda_new;
+						}
+						*_sqlda = sqlda = sqlda_last = NULL;
+					}
 					for (i = start; ntuples; ntuples--, i += direction)
 					{
 						/*
@@ -1621,17 +1656,26 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 					struct sqlda_struct *sqlda_new;
 					int			i;
 
-					/*
-					 * If we are passed in a previously existing sqlda (chain)
-					 * then free it.
-					 */
-					while (sqlda)
+					if (append_result)
 					{
-						sqlda_new = sqlda->desc_next;
-						free(sqlda);
-						sqlda = sqlda_new;
+						sqlda_last = sqlda;
+						while (sqlda_last && sqlda_last->desc_next)
+							sqlda_last = sqlda_last->desc_next;
 					}
-					*_sqlda = sqlda = sqlda_last = sqlda_new = NULL;
+					else
+					{
+						/*
+						 * If we are passed in a previously existing sqlda (chain)
+						 * then free it.
+						 */
+						while (sqlda)
+						{
+							sqlda_new = sqlda->desc_next;
+							free(sqlda);
+							sqlda = sqlda_new;
+						}
+						*_sqlda = sqlda = sqlda_last = NULL;
+					}
 					for (i = start; ntuples; ntuples--, i += direction)
 					{
 						/*
@@ -2036,7 +2080,7 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 		return false;
 	}
 
-	if (!ecpg_process_output(stmt, 0, PQntuples(stmt->results), LOOP_FORWARD, 0, true))
+	if (!ecpg_process_output(stmt, 0, PQntuples(stmt->results), LOOP_FORWARD, 0, true, false))
 	{
 		ecpg_do_epilogue(stmt);
 		return false;

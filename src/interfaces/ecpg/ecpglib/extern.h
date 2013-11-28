@@ -180,7 +180,7 @@ bool		ecpg_do_prologue(int, const int, const int, const char *, const bool,
 bool		ecpg_build_params(struct statement *);
 bool		ecpg_autostart_transaction(struct statement * stmt);
 bool		ecpg_execute(struct statement * stmt);
-bool		ecpg_process_output(struct statement *, int, int, int, int, bool);
+bool		ecpg_process_output(struct statement *, int, int, int, int, bool, bool);
 void		ecpg_do_epilogue(struct statement *);
 bool		ecpg_do(const int, const int, const int, const char *, const bool,
 				  const int, const char *, va_list);
