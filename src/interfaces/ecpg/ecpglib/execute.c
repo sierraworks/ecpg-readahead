@@ -1551,6 +1551,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 				{
 					struct sqlda_compat **_sqlda = (struct sqlda_compat **) var->pointer;
 					struct sqlda_compat *sqlda = *_sqlda;
+					struct sqlda_compat *sqlda_last;
 					struct sqlda_compat *sqlda_new;
 					int			i;
 
@@ -1564,8 +1565,8 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						free(sqlda);
 						sqlda = sqlda_new;
 					}
-					*_sqlda = sqlda = sqlda_new = NULL;
-					for (i = ntuples - 1; i >= 0; i--)
+					*_sqlda = sqlda = sqlda_last = sqlda_new = NULL;
+					for (i = 0; i < ntuples; i++)
 					{
 						/*
 						 * Build a new sqlda structure. Note that only
@@ -1592,14 +1593,19 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						{
 							ecpg_log("ecpg_process_output on line %d: new sqlda was built\n", stmt->lineno);
 
-							*_sqlda = sqlda_new;
+							if (sqlda_last)
+							{
+								sqlda_last->desc_next = sqlda_new;
+								sqlda_last = sqlda_new;
+							}
+							else
+							{
+								*_sqlda = sqlda = sqlda_last = sqlda_new;
+							}
 
-							ecpg_set_compat_sqlda(stmt->lineno, _sqlda, stmt->results, i, stmt->compat);
+							ecpg_set_compat_sqlda(stmt->lineno, &sqlda_new, stmt->results, i, stmt->compat);
 							ecpg_log("ecpg_process_output on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
 									 stmt->lineno, PQnfields(stmt->results));
-
-							sqlda_new->desc_next = sqlda;
-							sqlda = sqlda_new;
 						}
 					}
 				}
@@ -1607,6 +1613,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 				{
 					struct sqlda_struct **_sqlda = (struct sqlda_struct **) var->pointer;
 					struct sqlda_struct *sqlda = *_sqlda;
+					struct sqlda_struct *sqlda_last;
 					struct sqlda_struct *sqlda_new;
 					int			i;
 
@@ -1620,8 +1627,8 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						free(sqlda);
 						sqlda = sqlda_new;
 					}
-					*_sqlda = sqlda = sqlda_new = NULL;
-					for (i = ntuples - 1; i >= 0; i--)
+					*_sqlda = sqlda = sqlda_last = sqlda_new = NULL;
+					for (i = 0; i < ntuples; i++)
 					{
 						/*
 						 * Build a new sqlda structure. Note that only
@@ -1648,14 +1655,19 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						{
 							ecpg_log("ecpg_process_output on line %d: new sqlda was built\n", stmt->lineno);
 
-							*_sqlda = sqlda_new;
+							if (sqlda_last)
+							{
+								sqlda_last->desc_next = sqlda_new;
+								sqlda_last = sqlda_new;
+							}
+							else
+							{
+								*_sqlda = sqlda = sqlda_last = sqlda_new;
+							}
 
-							ecpg_set_native_sqlda(stmt->lineno, _sqlda, stmt->results, i, stmt->compat);
+							ecpg_set_native_sqlda(stmt->lineno, &sqlda_new, stmt->results, i, stmt->compat);
 							ecpg_log("ecpg_process_output on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
 									 stmt->lineno, PQnfields(stmt->results));
-
-							sqlda_new->desc_next = sqlda;
-							sqlda = sqlda_new;
 						}
 					}
 				}
