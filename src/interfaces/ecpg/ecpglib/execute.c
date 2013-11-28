@@ -1704,20 +1704,26 @@ ecpg_execute(struct statement * stmt)
 }
 
 /*
- * Execute SQL statements in the backend.
- * The input/output parameters (variable argument list) are passed
- * in a va_list, so other functions can use this interface.
+ * ecpg_do_prologue
+ * Initialize various infrastructure elements for executing the statement:
+ *	- create the statement structure
+ *	- set the C locale for communicating with the backend
+ *	- preprocess the variable list of input/output parameters into
+ *	  linked lists
  */
 bool
-ecpg_do(const int lineno, const int compat, const int force_indicator, const char *connection_name, const bool questionmarks, const int st, const char *query, va_list args)
+ecpg_do_prologue(int lineno, const int compat, const int force_indicator,
+		 const char *connection_name, const bool questionmarks,
+		 enum ECPG_statement_type statement_type, const char *query,
+		 va_list args, struct statement **stmt_out)
 {
 	struct statement *stmt;
 	struct connection *con;
-	bool		status;
 	enum ECPGttype type;
 	struct variable **list;
-	enum ECPG_statement_type statement_type = (enum ECPG_statement_type) st;
 	char	   *prepname;
+
+	*stmt_out = NULL;
 
 	if (!query)
 	{
@@ -1733,6 +1739,11 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 	/* Make sure we do NOT honor the locale for numeric input/output */
 	/* since the database wants the standard decimal point */
 	stmt->oldlocale = ecpg_strdup(setlocale(LC_NUMERIC, NULL), lineno);
+	if (stmt->oldlocale == NULL)
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
 	setlocale(LC_NUMERIC, "C");
 
 #ifdef ENABLE_THREAD_SAFETY
@@ -1905,12 +1916,9 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 	/* initialize auto_mem struct */
 	ecpg_clear_auto_mem();
 
-	status = ecpg_execute(stmt);
+	*stmt_out = stmt;
 
-	/* and reset locale value so our application is not affected */
-	ecpg_do_epilogue(stmt);
-
-	return (status);
+	return true;
 }
 
 /*
@@ -1925,6 +1933,34 @@ ecpg_do_epilogue(struct statement *stmt)
 
 	setlocale(LC_NUMERIC, stmt->oldlocale);
 	free_statement(stmt);
+}
+
+/*
+ * Execute SQL statements in the backend.
+ * The input/output parameters (variable argument list) are passed
+ * in a va_list, so other functions can use this interface.
+ */
+bool
+ecpg_do(const int lineno, const int compat, const int force_indicator, const char *connection_name, const bool questionmarks, const int st, const char *query, va_list args)
+{
+	struct statement   *stmt;
+	bool		status;
+
+	if (!ecpg_do_prologue(lineno, compat, force_indicator,
+				connection_name, questionmarks,
+				(enum ECPG_statement_type) st,
+				query, args, &stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	status = ecpg_execute(stmt);
+
+	/* and reset locale value so our application is not affected */
+	ecpg_do_epilogue(stmt);
+
+	return (status);
 }
 
 /*
