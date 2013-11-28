@@ -307,12 +307,14 @@ ecpg_is_type_an_array(int type, const struct statement * stmt, const struct vari
 
 
 bool
-ecpg_store_result(const PGresult *results, int act_field,
-				  const struct statement * stmt, struct variable * var)
+ecpg_store_result(const PGresult *results,
+				  int start, int ntuples, int direction,
+				  int act_field,
+				  const struct statement * stmt,
+				  struct variable * var, int var_index)
 {
 	enum ARRAY_TYPE isarray;
-	int			act_tuple,
-				ntuples = PQntuples(results);
+	int			tuples_left, act_tuple, act_index;
 	bool		status = true;
 
 	if ((isarray = ecpg_is_type_an_array(PQftype(results, act_field), stmt, var)) == ECPG_ARRAY_ERROR)
@@ -363,7 +365,7 @@ ecpg_store_result(const PGresult *results, int act_field,
 					if (!var->varcharsize && !var->arrsize)
 					{
 						/* special mode for handling char**foo=0 */
-						for (act_tuple = 0; act_tuple < ntuples; act_tuple++)
+						for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction)
 							len += strlen(PQgetvalue(results, act_tuple, act_field)) + 1;
 						len *= var->offset;		/* should be 1, but YMNK */
 						len += (ntuples + 1) * sizeof(char *);
@@ -372,7 +374,7 @@ ecpg_store_result(const PGresult *results, int act_field,
 					{
 						var->varcharsize = 0;
 						/* check strlen for each tuple */
-						for (act_tuple = 0; act_tuple < ntuples; act_tuple++)
+						for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction)
 						{
 							int			len = strlen(PQgetvalue(results, act_tuple, act_field)) + 1;
 
@@ -393,7 +395,7 @@ ecpg_store_result(const PGresult *results, int act_field,
 		}
 		else
 		{
-			for (act_tuple = 0; act_tuple < ntuples; act_tuple++)
+			for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction)
 				len += PQgetlength(results, act_tuple, act_field);
 		}
 
@@ -429,11 +431,11 @@ ecpg_store_result(const PGresult *results, int act_field,
 		/* storing the data (after the last array element) */
 		char	   *current_data_location = (char *) &current_string[ntuples + 1];
 
-		for (act_tuple = 0; act_tuple < ntuples && status; act_tuple++)
+		for (tuples_left = ntuples, act_tuple = start, act_index = var_index; tuples_left && status; tuples_left--, act_tuple += direction, act_index++)
 		{
 			int			len = strlen(PQgetvalue(results, act_tuple, act_field)) + 1;
 
-			if (!ecpg_get_data(results, act_tuple, act_field, act_tuple, stmt->lineno,
+			if (!ecpg_get_data(results, act_tuple, act_field, act_index, stmt->lineno,
 							 var->type, var->ind_type, current_data_location,
 							   var->ind_value, len, 0, var->ind_offset, isarray, stmt->compat, stmt->force_indicator))
 				status = false;
@@ -450,9 +452,9 @@ ecpg_store_result(const PGresult *results, int act_field,
 	}
 	else
 	{
-		for (act_tuple = 0; act_tuple < ntuples && status; act_tuple++)
+		for (tuples_left = ntuples, act_tuple = start, act_index = var_index; tuples_left && status; tuples_left--, act_tuple += direction, act_index++)
 		{
-			if (!ecpg_get_data(results, act_tuple, act_field, act_tuple, stmt->lineno,
+			if (!ecpg_get_data(results, act_tuple, act_field, act_index, stmt->lineno,
 							   var->type, var->ind_type, var->value,
 							   var->ind_value, var->varcharsize, var->offset, var->ind_offset, isarray, stmt->compat, stmt->force_indicator))
 				status = false;
@@ -1489,15 +1491,18 @@ ecpg_execute(struct statement * stmt)
  *	overflows the readahead window.
  *
  * Parameters
- *	stmt	statement structure holding the PGresult and
- *		the list of output variables
- *	clear_result
- *		PQclear() the result upon returning from this function
+ *	stmt:		statement structure holding the PGresult and
+ *			the list of output variables
+ *	start:		start index in PGresult
+ *	ntuples:	number of tuples to process
+ *	direction:	in this direction
+ *	var_index:	start index in the user variable if it's an array
+ *	clear_result:	PQclear() the result upon returning from this function
  *
  * Returns success as boolean. Also an SQL error is raised in case of failure.
  */
 bool
-ecpg_process_output(struct statement * stmt, bool clear_result)
+ecpg_process_output(struct statement * stmt, int start, int ntuples, int direction, int var_index, bool clear_result)
 {
 	struct variable *var;
 	bool		status = false;
@@ -1509,12 +1514,11 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 	switch (PQresultStatus(stmt->results))
 	{
 			int			nfields,
-						ntuples,
 						act_field;
 
 		case PGRES_TUPLES_OK:
 			nfields = PQnfields(stmt->results);
-			sqlca->sqlerrd[2] = ntuples = PQntuples(stmt->results);
+			sqlca->sqlerrd[2] = ntuples;
 			ecpg_log("ecpg_process_output on line %d: correctly got %d tuples with %d fields\n", stmt->lineno, ntuples, nfields);
 			status = true;
 
@@ -1541,7 +1545,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 					desc->result = stmt->results;
 					clear_result = false;
 					ecpg_log("ecpg_process_output on line %d: putting result (%d tuples) into descriptor %s\n",
-							 stmt->lineno, PQntuples(stmt->results), (const char *) var->pointer);
+							 stmt->lineno, ntuples, (const char *) var->pointer);
 				}
 				var = var->next;
 			}
@@ -1566,7 +1570,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						sqlda = sqlda_new;
 					}
 					*_sqlda = sqlda = sqlda_last = sqlda_new = NULL;
-					for (i = 0; i < ntuples; i++)
+					for (i = start; ntuples; ntuples--, i += direction)
 					{
 						/*
 						 * Build a new sqlda structure. Note that only
@@ -1628,7 +1632,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						sqlda = sqlda_new;
 					}
 					*_sqlda = sqlda = sqlda_last = sqlda_new = NULL;
-					for (i = 0; i < ntuples; i++)
+					for (i = start; ntuples; ntuples--, i += direction)
 					{
 						/*
 						 * Build a new sqlda structure. Note that only
@@ -1679,7 +1683,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 				{
 					if (var != NULL)
 					{
-						status = ecpg_store_result(stmt->results, act_field, stmt, var);
+						status = ecpg_store_result(stmt->results, start, ntuples, direction, act_field, stmt, var, var_index);
 						var = var->next;
 					}
 					else if (!INFORMIX_MODE(stmt->compat))
@@ -2032,7 +2036,7 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 		return false;
 	}
 
-	if (!ecpg_process_output(stmt, true))
+	if (!ecpg_process_output(stmt, 0, PQntuples(stmt->results), LOOP_FORWARD, 0, true))
 	{
 		ecpg_do_epilogue(stmt);
 		return false;

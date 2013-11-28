@@ -29,6 +29,9 @@ enum ARRAY_TYPE
 
 #define ECPG_IS_ARRAY(X) ((X) == ECPG_ARRAY_ARRAY || (X) == ECPG_ARRAY_VECTOR)
 
+#define LOOP_FORWARD	(1)
+#define LOOP_BACKWARD	(-1)
+
 /* A generic varchar type. */
 struct ECPGgeneric_varchar
 {
@@ -165,8 +168,10 @@ struct descriptor *ecpg_find_desc(int line, const char *name);
 struct prepared_statement *ecpg_find_prepared_statement(const char *,
 						  struct connection *, struct prepared_statement **);
 
-bool ecpg_store_result(const PGresult *results, int act_field,
-				  const struct statement * stmt, struct variable * var);
+bool ecpg_store_result(const PGresult *results,
+				  int start, int ntuples, int direction, int act_field,
+				  const struct statement * stmt,
+				  struct variable * var, int var_index);
 bool		ecpg_store_input(const int, const bool, const struct variable *, char **, bool);
 void		ecpg_free_params(struct statement *stmt, bool print);
 bool		ecpg_do_prologue(int, const int, const int, const char *, const bool,
@@ -175,7 +180,7 @@ bool		ecpg_do_prologue(int, const int, const int, const char *, const bool,
 bool		ecpg_build_params(struct statement *);
 bool		ecpg_autostart_transaction(struct statement * stmt);
 bool		ecpg_execute(struct statement * stmt);
-bool		ecpg_process_output(struct statement *, bool);
+bool		ecpg_process_output(struct statement *, int, int, int, int, bool);
 void		ecpg_do_epilogue(struct statement *);
 bool		ecpg_do(const int, const int, const int, const char *, const bool,
 				  const int, const char *, va_list);
