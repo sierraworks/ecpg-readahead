@@ -1646,13 +1646,15 @@
 [NO_PID]: sqlca: code: 100, state: 02000
 [NO_PID]: ECPGfetch on line 325: query: fetch backward 8 from scroll_cur4; fetch all: 0 amount: -8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 325: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 325: permanently raising readahead window size to 8
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 325: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 325: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 325: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 325: command fetch backward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 325: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 325: correctly got 8 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 325: RESULT: 26 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1662,22 +1664,6 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 325: RESULT: 23 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 325: RESULT: z offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 325: RESULT: y offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 325: RESULT: x offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 325: RESULT: w offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 325: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 325: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 325: command fetch backward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 325: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 325: RESULT: 22 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 325: RESULT: 21 offset: -1; array: no
@@ -1685,6 +1671,14 @@
 [NO_PID]: ecpg_get_data on line 325: RESULT: 20 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 325: RESULT: 19 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 325: RESULT: z offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 325: RESULT: y offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 325: RESULT: x offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 325: RESULT: w offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 325: RESULT: v offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1720,11 +1714,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 333: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 333: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 333: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 333: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 333: command fetch forward 4 from scroll_cur4; returned 1 tuples
+[NO_PID]: ecpg_cursor_execute on line 333: command fetch forward 8 from scroll_cur4; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 333: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1738,11 +1732,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 333: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 333: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 333: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 333: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 333: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 333: command fetch forward 8 from scroll_cur4; returned 6 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 333: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1756,11 +1750,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 333: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 333: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 333: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 333: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 333: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 333: command fetch forward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 333: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1806,13 +1800,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 350: query: fetch forward 8 from scroll_cur4; fetch all: 0 amount: 8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 350: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 350: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 350: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 350: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 350: command fetch forward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 350: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 350: correctly got 8 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 350: RESULT: 2 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1822,22 +1816,6 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 350: RESULT: 5 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 350: RESULT: b offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 350: RESULT: c offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 350: RESULT: d offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 350: RESULT: e offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 350: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 350: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 350: command fetch forward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 350: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 350: RESULT: 6 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 350: RESULT: 7 offset: -1; array: no
@@ -1845,6 +1823,14 @@
 [NO_PID]: ecpg_get_data on line 350: RESULT: 8 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 350: RESULT: 9 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 350: RESULT: b offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 350: RESULT: c offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 350: RESULT: d offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 350: RESULT: e offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 350: RESULT: f offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1964,13 +1950,15 @@
 [NO_PID]: sqlca: code: 100, state: 02000
 [NO_PID]: ECPGfetch on line 387: query: fetch forward 8 from scroll_cur4; fetch all: 0 amount: 8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 387: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 387: permanently raising readahead window size to 8
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 387: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 387: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 387: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 387: command fetch forward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 387: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 387: correctly got 8 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 387: RESULT: 1 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -1980,22 +1968,6 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 387: RESULT: 4 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 387: RESULT: a offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 387: RESULT: b offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 387: RESULT: c offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 387: RESULT: d offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 387: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 387: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 387: command fetch forward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 387: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 387: RESULT: 5 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 387: RESULT: 6 offset: -1; array: no
@@ -2003,6 +1975,14 @@
 [NO_PID]: ecpg_get_data on line 387: RESULT: 7 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 387: RESULT: 8 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 387: RESULT: a offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 387: RESULT: b offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 387: RESULT: c offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 387: RESULT: d offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 387: RESULT: e offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2038,11 +2018,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 395: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 395: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 395: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 395: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 395: command fetch backward 4 from scroll_cur4; returned 1 tuples
+[NO_PID]: ecpg_cursor_execute on line 395: command fetch backward 8 from scroll_cur4; returned 1 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 395: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2056,11 +2036,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 395: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 395: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 395: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 395: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 395: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 395: command fetch backward 8 from scroll_cur4; returned 6 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 395: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2074,11 +2054,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 395: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 395: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 395: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 395: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 395: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 395: command fetch backward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 395: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2124,13 +2104,13 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 412: query: fetch backward 8 from scroll_cur4; fetch all: 0 amount: -8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 412: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 412: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 412: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 412: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 412: command fetch backward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 412: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 412: correctly got 8 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 412: RESULT: 25 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2140,22 +2120,6 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 412: RESULT: 22 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 412: RESULT: y offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 412: RESULT: x offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 412: RESULT: w offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 412: RESULT: v offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 412: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 412: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 412: command fetch backward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 412: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 412: RESULT: 21 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 412: RESULT: 20 offset: -1; array: no
@@ -2163,6 +2127,14 @@
 [NO_PID]: ecpg_get_data on line 412: RESULT: 19 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 412: RESULT: 18 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 412: RESULT: y offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 412: RESULT: x offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 412: RESULT: w offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 412: RESULT: v offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 412: RESULT: u offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2182,15 +2154,17 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 433: query: fetch relative 5 from scroll_cur4; fetch all: 0 amount: 5
 [NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ECPGfetch on line 433: permanently raising readahead window size to 5
+[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 433: query: move relative 4 in scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 433: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 433: query: fetch forward 5 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 433: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 433: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 433: command fetch forward 5 from scroll_cur4; returned 5 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 433: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2200,19 +2174,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 433: query: fetch relative 5 from scroll_cur4; fetch all: 0 amount: 5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: move absolute 5 in scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 433: query: fetch forward 5 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 433: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: move relative 4 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 433: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 433: command fetch forward 5 from scroll_cur4; returned 5 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 433: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2222,19 +2188,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 433: query: fetch relative 5 from scroll_cur4; fetch all: 0 amount: 5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: move absolute 10 in scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 433: query: fetch forward 5 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 433: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: move relative 4 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 433: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 433: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 433: command fetch forward 5 from scroll_cur4; returned 5 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 433: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2282,13 +2240,15 @@
 [NO_PID]: sqlca: code: 100, state: 02000
 [NO_PID]: ECPGfetch on line 451: query: fetch backward 8 from scroll_cur4; fetch all: 0 amount: -8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 451: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 451: permanently raising readahead window size to 8
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 451: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 451: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 451: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 451: command fetch backward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 451: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 451: correctly got 8 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 451: RESULT: 26 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2298,22 +2258,6 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 451: RESULT: 23 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 451: RESULT: z offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 451: RESULT: y offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 451: RESULT: x offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 451: RESULT: w offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 451: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 451: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 451: command fetch backward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 451: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 451: RESULT: 22 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 451: RESULT: 21 offset: -1; array: no
@@ -2321,6 +2265,14 @@
 [NO_PID]: ecpg_get_data on line 451: RESULT: 20 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 451: RESULT: 19 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 451: RESULT: z offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 451: RESULT: y offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 451: RESULT: x offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 451: RESULT: w offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 451: RESULT: v offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2350,11 +2302,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 465: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 465: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 465: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 465: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 465: command fetch backward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 465: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2364,15 +2316,7 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 465: query: fetch relative - 5 from scroll_cur4; fetch all: 0 amount: -5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: move absolute -14 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 465: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 465: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 465: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2386,11 +2330,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 465: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 465: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 465: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 465: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 465: command fetch backward 8 from scroll_cur4; returned 7 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 465: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2400,13 +2344,7 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 465: query: fetch relative - 5 from scroll_cur4; fetch all: 0 amount: -5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: move absolute -20 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: fetch relative - 5 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: using PQexec
+[NO_PID]: ecpg_cursor_execute on line 465: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 465: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2416,23 +2354,15 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 465: query: fetch relative - 5 from scroll_cur4; fetch all: 0 amount: -5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: query: fetch relative - 5 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 465: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 465: correctly got 0 tuples with 2 fields
+[NO_PID]: ecpg_cursor_execute on line 465: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 465: no data found on line 465
 [NO_PID]: sqlca: code: 100, state: 02000
 [NO_PID]: ECPGfetch on line 483: query: fetch forward 8 from scroll_cur4; fetch all: 0 amount: 8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 483: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_cursor_execute on line 483: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 483: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 483: command fetch forward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 483: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 483: correctly got 7 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: 1 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2442,6 +2372,12 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: 4 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 483: RESULT: 5 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 483: RESULT: 6 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 483: RESULT: 7 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: a offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: b offset: -1; array: no
@@ -2450,27 +2386,25 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: d offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 483: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 483: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 483: command fetch forward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 483: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 483: RESULT: 5 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 483: RESULT: 6 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 483: RESULT: 7 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 483: RESULT: 8 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: e offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: f offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: g offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 483: query: move absolute -20 in scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 483: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 483: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 483: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 483: command fetch forward 8 from scroll_cur4; returned 8 tuples
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_process_output on line 483: correctly got 1 tuples with 2 fields
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 483: RESULT: 8 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 483: RESULT: h offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2496,6 +2430,8 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 511: query: fetch relative - 5 from scroll_cur4; fetch all: 0 amount: -5
 [NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ECPGfetch on line 511: permanently raising readahead window size to 5
+[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 511: query: move forward all in scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 511: using PQexec
@@ -2504,11 +2440,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 511: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 511: query: fetch backward 5 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 511: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 511: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 511: command fetch backward 5 from scroll_cur4; returned 5 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 511: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2518,19 +2454,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 511: query: fetch relative - 5 from scroll_cur4; fetch all: 0 amount: -5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: move absolute -5 in scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 511: query: fetch backward 5 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 511: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: move relative -4 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 511: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 511: command fetch backward 5 from scroll_cur4; returned 5 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 511: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2540,19 +2468,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 511: query: fetch relative - 5 from scroll_cur4; fetch all: 0 amount: -5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: move absolute -10 in scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 511: query: fetch backward 5 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 511: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: move relative -4 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 511: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 511: command fetch backward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 511: command fetch backward 5 from scroll_cur4; returned 5 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 511: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2600,13 +2520,15 @@
 [NO_PID]: sqlca: code: 100, state: 02000
 [NO_PID]: ECPGfetch on line 529: query: fetch forward 8 from scroll_cur4; fetch all: 0 amount: 8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 529: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ECPGfetch on line 529: permanently raising readahead window size to 8
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 529: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 529: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 529: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 529: command fetch forward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 529: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 529: correctly got 8 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 529: RESULT: 1 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2616,22 +2538,6 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 529: RESULT: 4 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 529: RESULT: a offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 529: RESULT: b offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 529: RESULT: c offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 529: RESULT: d offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 529: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 529: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 529: command fetch forward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 529: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 529: RESULT: 5 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 529: RESULT: 6 offset: -1; array: no
@@ -2639,6 +2545,14 @@
 [NO_PID]: ecpg_get_data on line 529: RESULT: 7 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 529: RESULT: 8 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 529: RESULT: a offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 529: RESULT: b offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 529: RESULT: c offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 529: RESULT: d offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 529: RESULT: e offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2668,11 +2582,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 543: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 543: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 543: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 543: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 543: command fetch forward 8 from scroll_cur4; returned 8 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 543: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2682,15 +2596,7 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 543: query: fetch relative 5 from scroll_cur4; fetch all: 0 amount: 5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: move absolute 14 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 543: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 543: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 543: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2704,11 +2610,11 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 543: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: fetch forward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 543: query: fetch forward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 543: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 543: command fetch forward 4 from scroll_cur4; returned 4 tuples
+[NO_PID]: ecpg_cursor_execute on line 543: command fetch forward 8 from scroll_cur4; returned 7 tuples
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 543: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2718,13 +2624,7 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 543: query: fetch relative 5 from scroll_cur4; fetch all: 0 amount: 5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: move absolute 20 in scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: fetch relative 5 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: using PQexec
+[NO_PID]: ecpg_cursor_execute on line 543: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 543: correctly got 1 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2734,23 +2634,15 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGfetch on line 543: query: fetch relative 5 from scroll_cur4; fetch all: 0 amount: 5
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: query: fetch relative 5 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 543: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 543: correctly got 0 tuples with 2 fields
+[NO_PID]: ecpg_cursor_execute on line 543: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: raising sqlcode 100 on line 543: no data found on line 543
 [NO_PID]: sqlca: code: 100, state: 02000
 [NO_PID]: ECPGfetch on line 561: query: fetch backward 8 from scroll_cur4; fetch all: 0 amount: -8
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 561: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_cursor_execute on line 561: tuple already in cache
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 561: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 561: command fetch backward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 561: correctly got 4 tuples with 2 fields
+[NO_PID]: ecpg_process_output on line 561: correctly got 7 tuples with 2 fields
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: 26 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -2760,6 +2652,12 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: 23 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 561: RESULT: 22 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 561: RESULT: 21 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 561: RESULT: 20 offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: z offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: y offset: -1; array: no
@@ -2768,27 +2666,25 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: w offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 561: query: fetch backward 4 from scroll_cur4; with 0 parameter(s) on connection regress1
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 561: using PQexec
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_cursor_execute on line 561: command fetch backward 4 from scroll_cur4; returned 4 tuples
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_process_output on line 561: correctly got 4 tuples with 2 fields
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 561: RESULT: 22 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 561: RESULT: 21 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 561: RESULT: 20 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_get_data on line 561: RESULT: 19 offset: -1; array: no
-[NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: v offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: u offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: t offset: -1; array: no
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 561: query: move absolute 20 in scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 561: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 561: query: fetch backward 8 from scroll_cur4; with 0 parameter(s) on connection regress1
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_execute on line 561: using PQexec
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_cursor_execute on line 561: command fetch backward 8 from scroll_cur4; returned 8 tuples
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_process_output on line 561: correctly got 1 tuples with 2 fields
+[NO_PID]: sqlca: code: 0, state: 00000
+[NO_PID]: ecpg_get_data on line 561: RESULT: 19 offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_get_data on line 561: RESULT: s offset: -1; array: no
 [NO_PID]: sqlca: code: 0, state: 00000

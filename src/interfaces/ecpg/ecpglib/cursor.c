@@ -1916,6 +1916,16 @@ ECPGfetch(const int lineno, const int compat, const int force_indicator,
 		}
 		else
 		{
+			if (dir == ECPGc_forward || dir == ECPGc_relative)
+			{
+				if (llabs(amount1) > cur->readahead)
+				{
+					cur->readahead = llabs(amount1);
+					ecpg_log("ECPGfetch on line %d: permanently raising readahead window size to %lld\n",
+									lineno, (long long)cur->readahead);
+				}
+			}
+
 			if (!ecpg_cursor_fetch(stmt, cur, dir, amount1, fetchall))
 			{
 				ecpg_do_epilogue(stmt);
