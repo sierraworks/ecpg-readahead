@@ -108,15 +108,15 @@ main (void)
     }
 
   ECPGset_var( 0, &( empl.idnum ), __LINE__);\
- /* declare C cursor for select name , accs , byte from empl where idnum = $1  */
+ /* declare C no scroll cursor for select name , accs , byte from empl where idnum = $1  */
 #line 58 "binary.pgc"
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "C", ECPGst_normal, "declare C cursor for select name , accs , byte from empl where idnum = $1 ", 
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "C", ECPGst_normal, "declare C no scroll cursor for select name , accs , byte from empl where idnum = $1 ", 
 	ECPGt_long,&(empl.idnum),(long)1,(long)1,sizeof(long), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
 #line 59 "binary.pgc"
 
-  { ECPGfetch(__LINE__, 0, 1, NULL, 0, "C", ECPGst_normal, "fetch C", ECPGt_EOIT, 
+  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "C", ECPGst_normal, "fetch C", ECPGt_EOIT, 
 	ECPGt_char,(empl.name),(long)21,(long)1,(21)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_short,&(empl.accs),(long)1,(long)1,sizeof(short), 
@@ -139,15 +139,15 @@ main (void)
 
   memset(empl.name, 0, 21L);
   ECPGset_var( 1, &( empl.idnum ), __LINE__);\
- /* declare B binary cursor for select name , accs , byte from empl where idnum = $1  */
+ /* declare B binary no scroll cursor for select name , accs , byte from empl where idnum = $1  */
 #line 72 "binary.pgc"
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "B", ECPGst_normal, "declare B binary cursor for select name , accs , byte from empl where idnum = $1 ", 
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "B", ECPGst_normal, "declare B binary no scroll cursor for select name , accs , byte from empl where idnum = $1 ", 
 	ECPGt_long,&(empl.idnum),(long)1,(long)1,sizeof(long), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
 #line 73 "binary.pgc"
 
-  { ECPGfetch(__LINE__, 0, 1, NULL, 0, "B", ECPGst_normal, "fetch B", ECPGt_EOIT, 
+  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "B", ECPGst_normal, "fetch B", ECPGt_EOIT, 
 	ECPGt_char,(empl.name),(long)21,(long)1,(21)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_short,&(empl.accs),(long)1,(long)1,sizeof(short), 
@@ -173,15 +173,15 @@ main (void)
   printf("\n");
 
   ECPGset_var( 2, &( empl.idnum ), __LINE__);\
- /* declare A binary cursor for select byte from empl where idnum = $1  */
+ /* declare A binary no scroll cursor for select byte from empl where idnum = $1  */
 #line 89 "binary.pgc"
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "A", ECPGst_normal, "declare A binary cursor for select byte from empl where idnum = $1 ", 
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "A", ECPGst_normal, "declare A binary no scroll cursor for select byte from empl where idnum = $1 ", 
 	ECPGt_long,&(empl.idnum),(long)1,(long)1,sizeof(long), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);}
 #line 90 "binary.pgc"
 
-  { ECPGfetch(__LINE__, 0, 1, NULL, 0, "A", ECPGst_normal, "fetch A", ECPGt_EOIT, 
+  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "A", ECPGst_normal, "fetch A", ECPGt_EOIT, 
 	ECPGt_char,&(pointer),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);}
 #line 91 "binary.pgc"

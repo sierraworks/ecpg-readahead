@@ -97,7 +97,8 @@ static struct cursor_descriptor *
 add_cursor(int lineno, struct connection *con,
 					const char *name,
 					int subxact_level,
-					bool with_hold)
+					bool with_hold,
+					enum ECPG_cursor_scroll scrollable)
 {
 	struct cursor_descriptor *desc, *prev;
 
@@ -123,6 +124,7 @@ add_cursor(int lineno, struct connection *con,
 
 	desc->subxact_level = subxact_level;
 	desc->with_hold = with_hold;
+	desc->scrollable = scrollable;
 
 	if (prev)
 	{
@@ -243,7 +245,8 @@ ecpg_commit_cursors(int lineno, struct connection * conn,
 bool
 ECPGopen(const int lineno, const int compat, const int force_indicator,
 			const char *connection_name, const bool questionmarks,
-			const bool with_hold, const char *curname, const int st, const char *query, ...)
+			const bool with_hold, enum ECPG_cursor_scroll scrollable,
+			const char *curname, const int st, const char *query, ...)
 {
 	struct connection *con = ecpg_get_connection(connection_name);
 	int		subxact_level;
@@ -270,8 +273,66 @@ ECPGopen(const int lineno, const int compat, const int force_indicator,
 		subxact_level =
 			(PQtransactionStatus(con->connection) != PQTRANS_IDLE ?
 										1 : 0);
-	add_cursor(lineno, con, curname, subxact_level, with_hold);
+	add_cursor(lineno, con, curname, subxact_level, with_hold, scrollable);
 
+	return true;
+}
+
+/*
+ * Canonicalize the amount of cursor movement.
+ */
+static bool
+ecpg_canonical_cursor_movement(enum ECPG_cursor_direction *direction, const char *amount,
+				bool *fetchall, int64 *amount_out)
+{
+	bool		negate = false;
+	int64		amount1;
+
+	/*
+	 * We might have got a constant string from the grammar.
+	 * We have to handle the negative and explicitely positive constants
+	 * here because e.g. '-2' arrives as '- 2' from the grammar.
+	 * strtoll() under Linux stops processing at the space.
+	 */
+	if (amount[0] == '-' || amount[0] == '+')
+	{
+		negate = (amount[0] == '-');
+		amount++;
+		while (*amount == ' ')
+			amount++;
+	}
+
+	/* FETCH/MOVE [ FORWARD | BACKWARD ] ALL */
+	if (strcmp(amount, "all") == 0)
+	{
+		*fetchall = true;
+		amount1 = 0;
+	}
+	else
+	{
+		char	   *endptr;
+
+		amount1 = strtoll(amount, &endptr, 10);
+
+		if (*endptr)
+			return false;
+
+		if (negate)
+			amount1 = -amount1;
+		*fetchall = false;
+	}
+
+	/*
+	 * Canonicalize ECPGc_backward but don't lose
+	 * FETCH BACKWARD ALL semantics.
+	 */
+	if ((*fetchall == false) && (*direction == ECPGc_backward))
+	{
+		amount1 = -amount1;
+		*direction = ECPGc_forward;
+	}
+
+	*amount_out = amount1;
 	return true;
 }
 
@@ -280,16 +341,21 @@ ECPGopen(const int lineno, const int compat, const int force_indicator,
  * Execute a FETCH or MOVE statement for the application.
  *
  * This function maintains the internal cursor descriptor and
- * reduces the the network roundtrip by returning early for
- * an unknown cursor name.
+ * reduces the the network roundtrip by:
+ * - returning early for an unknown cursor name
+ * - checking whether the cursor is scrollable against the direction
  */
 bool
 ECPGfetch(const int lineno, const int compat, const int force_indicator,
 				const char *connection_name, const bool questionmarks,
+				enum ECPG_cursor_direction dir, const char *amount,
 				const char *curname, const int st, const char *query, ...)
 {
 	struct connection  *con = ecpg_get_connection(connection_name);
 	struct cursor_descriptor *cur;
+	struct statement   *stmt;
+	int64		amount1;
+	bool		fetchall;
 	bool		ret;
 	va_list		args;
 
@@ -297,11 +363,66 @@ ECPGfetch(const int lineno, const int compat, const int force_indicator,
 		return false;
 
 	va_start(args, query);
-	ret = ecpg_do(lineno, compat, force_indicator, connection_name, questionmarks,
-									st,
-									query,
-									args);
+
+	if (!ecpg_do_prologue(lineno, compat, force_indicator,
+				connection_name, questionmarks,
+				(enum ECPG_statement_type) st,
+				query, args, &stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		va_end(args);
+		return false;
+	}
+
 	va_end(args);
+
+	if (!ecpg_build_params(stmt, (dir >= ECPGc_absolute_in_var)))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	if (dir >= ECPGc_absolute_in_var)
+	{
+		dir -= ECPGc_absolute_in_var;
+		amount = stmt->cursor_amount;
+	}
+
+	if (!ecpg_canonical_cursor_movement(&dir, amount, &fetchall, &amount1))
+	{
+		ecpg_do_epilogue(stmt);
+		ecpg_raise(lineno, ECPG_NUMERIC_FORMAT, ECPG_SQLSTATE_DATATYPE_MISMATCH, amount);
+		con->client_side_error = true;
+		return false;
+	}
+
+	if (cur->scrollable == ECPGcs_no_scroll && (amount1 < 0 || dir == ECPGc_backward))
+	{
+		ecpg_do_epilogue(stmt);
+		ecpg_raise(lineno, ECPG_NUMERIC_FORMAT, ECPG_SQLSTATE_DATATYPE_MISMATCH, amount);
+		con->client_side_error = true;
+		return false;
+	}
+
+	if (!ecpg_autostart_transaction(stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	if (!ecpg_execute(stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	if (!ecpg_process_output(stmt, 0, PQntuples(stmt->results), LOOP_FORWARD, 0, true, false))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	ecpg_do_epilogue(stmt);
 
 	return ret;
 }

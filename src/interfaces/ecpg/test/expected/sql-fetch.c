@@ -95,11 +95,11 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 24 "fetch.pgc"
 
 
-  /* declare C cursor for select * from My_Table */
+  /* declare C scroll cursor for select * from My_Table */
 #line 26 "fetch.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "C", ECPGst_normal, "declare C cursor for select * from My_Table", ECPGt_EOIT, ECPGt_EORT);
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, "C", ECPGst_normal, "declare C scroll cursor for select * from My_Table", ECPGt_EOIT, ECPGt_EORT);
 #line 28 "fetch.pgc"
 
 if (sqlca.sqlwarn[0] == 'W') sqlprint();
@@ -113,7 +113,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 30 "fetch.pgc"
 
   while (1) {
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, "C", ECPGst_normal, "fetch 1 in C", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "C", ECPGst_normal, "fetch 1 in C", ECPGt_EOIT, 
 	ECPGt_int,&(i),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char,(str),(long)25,(long)1,(25)*sizeof(char), 
@@ -135,7 +135,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
   /* exec sql whenever not found  continue ; */
 #line 36 "fetch.pgc"
 
-  { ECPGfetch(__LINE__, 0, 1, NULL, 0, "C", ECPGst_normal, "move backward 2 in C", ECPGt_EOIT, ECPGt_EORT);
+  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_backward, "2", "C", ECPGst_normal, "move backward 2 in C", ECPGt_EOIT, ECPGt_EORT);
 #line 37 "fetch.pgc"
 
 if (sqlca.sqlwarn[0] == 'W') sqlprint();
@@ -145,7 +145,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 37 "fetch.pgc"
 
 
-  { ECPGfetch(__LINE__, 0, 1, NULL, 0, "C", ECPGst_normal, "fetch $0 in C", 
+  { ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward_in_var, NULL, "C", ECPGst_normal, "fetch $0 in C", 
 	ECPGt_int,&(count),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(i),(long)1,(long)1,sizeof(int), 
@@ -172,11 +172,11 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 42 "fetch.pgc"
 
 
-  /* declare D cursor for select * from My_Table where Item1 = $1 */
+  /* declare D scroll cursor for select * from My_Table where Item1 = $1 */
 #line 44 "fetch.pgc"
 
 
-  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "D", ECPGst_normal, "declare D cursor for select * from My_Table where Item1 = $1", 
+  { ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_scroll, "D", ECPGst_normal, "declare D scroll cursor for select * from My_Table where Item1 = $1", 
 	ECPGt_const,"1",(long)1,(long)1,strlen("1"), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 46 "fetch.pgc"
@@ -192,7 +192,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 48 "fetch.pgc"
 
   while (1) {
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, "D", ECPGst_normal, "fetch 1 in D", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "D", ECPGst_normal, "fetch 1 in D", ECPGt_EOIT, 
 	ECPGt_int,&(i),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char,(str),(long)25,(long)1,(25)*sizeof(char), 

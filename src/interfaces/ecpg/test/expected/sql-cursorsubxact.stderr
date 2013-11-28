@@ -16,7 +16,7 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGtrans on line 28: action "commit"; connection "regress1"
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 41: query: declare MyCur cursor for select id , t from t1; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 41: query: declare MyCur no scroll cursor for select id , t from t1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 41: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -28,7 +28,7 @@
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_process_output on line 49: OK: CLOSE CURSOR
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 64: query: declare "MyCur" cursor for select id , t from t1; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 64: query: declare "MyCur" no scroll cursor for select id , t from t1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 64: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -44,7 +44,7 @@ SQL error: current transaction is aborted, commands ignored until end of transac
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGtrans on line 98: action "savepoint a"; connection "regress1"
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 100: query: declare "MyCur" cursor for select id , t from t1; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 100: query: declare "MyCur" no scroll cursor for select id , t from t1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 100: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -59,7 +59,7 @@ SQL error: invalid cursorname ""MyCur"" on line 110
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGtrans on line 124: action "savepoint a"; connection "regress1"
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 130: query: declare "MyCur" cursor for select id , t from t1; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 130: query: declare "MyCur" no scroll cursor for select id , t from t1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 130: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -103,7 +103,7 @@ SQL error: no such savepoint on line 199
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ECPGtrans on line 214: action "savepoint a"; connection "regress1"
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 220: query: declare "MyCur" cursor for select id , t from t1; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 220: query: declare "MyCur" no scroll cursor for select id , t from t1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 220: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000
@@ -129,7 +129,7 @@ SQL error: invalid cursorname ""MyCur"" on line 240
 SQL error: current transaction is aborted, commands ignored until end of transaction block on line 246
 [NO_PID]: ECPGtrans on line 252: action "rollback to a"; connection "regress1"
 [NO_PID]: sqlca: code: 0, state: 00000
-[NO_PID]: ecpg_execute on line 258: query: declare "MyCur" cursor for select id , t from t1; with 0 parameter(s) on connection regress1
+[NO_PID]: ecpg_execute on line 258: query: declare "MyCur" no scroll cursor for select id , t from t1; with 0 parameter(s) on connection regress1
 [NO_PID]: sqlca: code: 0, state: 00000
 [NO_PID]: ecpg_execute on line 258: using PQexec
 [NO_PID]: sqlca: code: 0, state: 00000

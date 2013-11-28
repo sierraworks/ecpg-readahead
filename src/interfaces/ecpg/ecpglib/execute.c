@@ -105,6 +105,7 @@ free_statement(struct statement * stmt)
 	ecpg_free(stmt->command);
 	ecpg_free(stmt->name);
 	ecpg_free(stmt->oldlocale);
+	ecpg_free(stmt->cursor_amount);
 	ecpg_free(stmt);
 }
 
@@ -1133,7 +1134,7 @@ insert_tobeinserted(int position, int ph_len, struct statement * stmt, char *tob
  *	an array of strings for PQexecParams().
  */
 bool
-ecpg_build_params(struct statement * stmt)
+ecpg_build_params(struct statement * stmt, bool first_0_is_cursor_amount)
 {
 	struct variable *var;
 	int			desc_counter = 0;
@@ -1365,6 +1366,17 @@ ecpg_build_params(struct statement * stmt)
 		 */
 		else if (stmt->command[position] == '0')
 		{
+			if (first_0_is_cursor_amount)
+			{
+				stmt->cursor_amount = ecpg_strdup(tobeinserted, stmt->lineno);
+				if (stmt->cursor_amount == NULL)
+				{
+					ecpg_free_params(stmt, false);
+					return false;
+				}
+				first_0_is_cursor_amount = false;
+			}
+
 			if (!insert_tobeinserted(position, 2, stmt, tobeinserted))
 			{
 				ecpg_free_params(stmt, false);
@@ -2069,7 +2081,7 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 		return false;
 	}
 
-	if (!ecpg_build_params(stmt))
+	if (!ecpg_build_params(stmt, false))
 	{
 		ecpg_do_epilogue(stmt);
 		return false;

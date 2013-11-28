@@ -31,7 +31,10 @@ extern int	braces_open,
 			ecpg_internal_var;
 extern char *current_function;
 extern char *current_cursor;
-enum ECPGttype current_cursor_vartype;
+extern enum ECPGttype current_cursor_vartype;
+extern enum ECPG_cursor_direction current_cursor_direction;
+extern enum ECPG_cursor_scroll current_cursor_scrollable;
+extern char *current_cursor_amount;
 extern char *descriptor_index;
 extern char *descriptor_name;
 extern char *connection;

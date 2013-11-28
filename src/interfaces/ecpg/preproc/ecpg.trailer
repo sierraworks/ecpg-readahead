@@ -318,7 +318,17 @@ ECPGCursorStmt:  DECLARE cursor_name cursor_options CURSOR opt_hold FOR prepared
 			this->opened = false;
 			this->with_hold = (strncmp($5, "with ", 5) == 0);
 			this->vartype = current_cursor_vartype;
-			this->command =  cat_str(6, mm_strdup("declare"), cursor_marker, $3, mm_strdup("cursor"), $5, mm_strdup("for $1"));
+			if (current_cursor_scrollable == ECPGcs_unspecified)
+			{
+				this->scrollable = ECPGcs_no_scroll;
+				this->command =  cat_str(7, mm_strdup("declare"), cursor_marker, $3, mm_strdup("no scroll"), mm_strdup("cursor"), $5, mm_strdup("for $1"));
+			}
+			else
+			{
+				this->scrollable = current_cursor_scrollable;
+				this->command =  cat_str(6, mm_strdup("declare"), cursor_marker, $3, mm_strdup("cursor"), $5, mm_strdup("for $1"));
+				current_cursor_scrollable = ECPGcs_unspecified;
+			}
 			this->argsresult = NULL;
 			this->argsresult_oos = NULL;
 

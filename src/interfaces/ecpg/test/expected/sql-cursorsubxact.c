@@ -88,11 +88,11 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	curname = CURNAME;
 
 	ECPGset_var( 0, &( curname ), __LINE__);\
- /* declare $0 cursor for select id , t from t1 */
+ /* declare $0 no scroll cursor for select id , t from t1 */
 #line 39 "cursorsubxact.pgc"
 
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 41 "cursorsubxact.pgc"
@@ -129,7 +129,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	curname = QUOTED_CURNAME;
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 64 "cursorsubxact.pgc"
@@ -196,7 +196,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 98 "cursorsubxact.pgc"
 
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 100 "cursorsubxact.pgc"
@@ -255,7 +255,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	else
 		printf("\"savepoint a\" succeeded\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 130 "cursorsubxact.pgc"
@@ -332,7 +332,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	/* the cursor was declared under savepoint "a", was forgotten */
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, curname, ECPGst_normal, "fetch from $0", 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", curname, ECPGst_normal, "fetch from $0", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(id[0]),(long)1,(long)1,sizeof(int), 
@@ -413,7 +413,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	else
 		printf("\"savepoint a\" succeeded\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 220 "cursorsubxact.pgc"
@@ -426,7 +426,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	else
 		printf("open %s (case sensitive) succeeded\n", curname);
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, curname, ECPGst_normal, "fetch from $0", 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", curname, ECPGst_normal, "fetch from $0", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(id[0]),(long)1,(long)1,sizeof(int), 
@@ -456,7 +456,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	/* there's no cursor now */
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, curname, ECPGst_normal, "fetch from $0", 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", curname, ECPGst_normal, "fetch from $0", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(id[1]),(long)1,(long)1,sizeof(int), 
@@ -473,7 +473,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	else
 		printf("fetch from %s (case sensitive) unexpectedly succeeded (expected 34000)\n", curname);
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 246 "cursorsubxact.pgc"
@@ -497,7 +497,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 	else
 		printf("\"rollback to a\" succeeded\n");
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, curname, ECPGst_normal, "declare $0 cursor for select id , t from t1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, curname, ECPGst_normal, "declare $0 no scroll cursor for select id , t from t1", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, ECPGt_EORT);
 #line 258 "cursorsubxact.pgc"
@@ -523,7 +523,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	/* release savepoint propagated the cursor to the toplevel transaction */
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, curname, ECPGst_normal, "fetch from $0", 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", curname, ECPGst_normal, "fetch from $0", 
 	ECPGt_char,&(curname),(long)0,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT, 
 	ECPGt_int,&(id[2]),(long)1,(long)1,sizeof(int), 

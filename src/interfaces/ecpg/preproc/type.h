@@ -131,6 +131,7 @@ struct cursor
 	bool		opened;
 	bool		with_hold;
 	enum ECPGttype	vartype;
+	enum ECPG_cursor_scroll scrollable;
 	struct arguments *argsinsert;
 	struct arguments *argsinsert_oos;
 	struct arguments *argsresult;

@@ -66,6 +66,7 @@ struct statement
 	char	   *oldlocale;
 	int		nparams;
 	char	  **paramvalues;
+	char	   *cursor_amount;
 	PGresult   *results;
 };
 
@@ -98,6 +99,7 @@ struct cursor_descriptor {
 	 */
 	int		subxact_level;
 	bool		with_hold;
+	enum ECPG_cursor_scroll scrollable;
 };
 
 /* structure to store connections */
@@ -202,7 +204,7 @@ void		ecpg_free_params(struct statement *stmt, bool print);
 bool		ecpg_do_prologue(int, const int, const int, const char *, const bool,
 				  enum ECPG_statement_type, const char *, va_list,
 				  struct statement **);
-bool		ecpg_build_params(struct statement *);
+bool		ecpg_build_params(struct statement *, bool);
 bool		ecpg_autostart_transaction(struct statement * stmt);
 bool		ecpg_execute(struct statement * stmt);
 bool		ecpg_process_output(struct statement *, int, int, int, int, bool, bool);
@@ -249,6 +251,7 @@ void		ecpg_commit_cursors(int lineno, struct connection * conn, bool rollback, i
 #define ECPG_SQLSTATE_SYNTAX_ERROR			"42601"
 #define ECPG_SQLSTATE_DATATYPE_MISMATCH		"42804"
 #define ECPG_SQLSTATE_DUPLICATE_CURSOR		"42P03"
+#define ECPG_SQLSTATE_OBJECT_NOT_IN_PREREQUISITE_STATE	"55000"
 
 /* implementation-defined internal errors of ecpg */
 #define ECPG_SQLSTATE_ECPG_INTERNAL_ERROR	"YE000"

@@ -218,6 +218,13 @@ ecpg_raise(int line, int code, const char *sqlstate, const char *str)
 			   translator: this string will be truncated at 149 characters expanded.  */
 					 ecpg_gettext("invalid cursorname \"%s\" on line %d"), str, line);
 			}
+			else if (strcmp(sqlstate, ECPG_SQLSTATE_OBJECT_NOT_IN_PREREQUISITE_STATE) == 0)
+			{
+				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),
+			/*
+			   translator: this string will be truncated at 149 characters expanded.  */
+					 ecpg_gettext("cursor \"%s\" can only scan forward on line %d"), str, line);
+			}
 			else
 			{
 				snprintf(sqlca->sqlerrm.sqlerrmc, sizeof(sqlca->sqlerrm.sqlerrmc),

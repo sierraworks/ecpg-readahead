@@ -5277,8 +5277,15 @@ while (1)
      <term>-231 (<symbol>ECPG_INVALID_CURSOR</symbol>)</term>
      <listitem>
       <para>
+       This error code may occur in the following conditions.
+      </para>
+      <para>
        The cursor name you are trying to use is invalid.
        (SQLSTATE 34000)
+      </para>
+      <para>
+       The cursor was declared to be non-scrollable and you are
+       trying to move or fetch backward. (SQLSTATE 55000)
       </para>
      </listitem>
     </varlistentry>

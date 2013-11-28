@@ -242,10 +242,10 @@ if (sqlca.sqlcode < 0) sqlprint();}
 
 	printf("output = %s\n", val2output);
 
-	/* declare c1 cursor for $1 */
+	/* declare c1 no scroll cursor for $1 */
 #line 57 "desc.pgc"
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "c1", ECPGst_normal, "declare c1 cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "c1", ECPGst_normal, "declare c1 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "foo2", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_descriptor, "indesc", 0L, 0L, 0L, 
@@ -256,7 +256,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 58 "desc.pgc"
 
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, "c1", ECPGst_normal, "fetch next from c1", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "c1", ECPGst_normal, "fetch next from c1", ECPGt_EOIT, 
 	ECPGt_int,&(val1output),(long)1,(long)1,sizeof(int), 
 	ECPGt_int,&(ind1),(long)1,(long)1,sizeof(int), 
 	ECPGt_char,(val2output),(long)sizeof("AAA"),(long)1,(sizeof("AAA"))*sizeof(char), 
@@ -292,10 +292,10 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 67 "desc.pgc"
 
 
-	/* declare c2 cursor for $1 */
+	/* declare c2 no scroll cursor for $1 */
 #line 69 "desc.pgc"
 
-	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, "c2", ECPGst_normal, "declare c2 cursor for $1", 
+	{ ECPGopen(__LINE__, 0, 1, NULL, 0, 0, ECPGcs_no_scroll, "c2", ECPGst_normal, "declare c2 no scroll cursor for $1", 
 	ECPGt_char_variable,(ECPGprepared_statement(NULL, "foo3", __LINE__)),(long)1,(long)1,(1)*sizeof(char), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_descriptor, "indesc", 0L, 0L, 0L, 
@@ -306,7 +306,7 @@ if (sqlca.sqlcode < 0) sqlprint();}
 #line 70 "desc.pgc"
 
 
-	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, "c2", ECPGst_normal, "fetch next from c2", ECPGt_EOIT, 
+	{ ECPGfetch(__LINE__, 0, 1, NULL, 0, ECPGc_forward, "1", "c2", ECPGst_normal, "fetch next from c2", ECPGt_EOIT, 
 	ECPGt_int,&(val1output),(long)1,(long)1,sizeof(int), 
 	ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, 
 	ECPGt_char,(val2output),(long)sizeof("AAA"),(long)1,(sizeof("AAA"))*sizeof(char), 
