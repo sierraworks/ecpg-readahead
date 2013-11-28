@@ -166,6 +166,7 @@ bool ecpg_store_result(const PGresult *results, int act_field,
 				  const struct statement * stmt, struct variable * var);
 bool		ecpg_store_input(const int, const bool, const struct variable *, char **, bool);
 void		ecpg_do_epilogue(struct statement *);
+bool		ecpg_do(const int, const int, const int, const char *, const bool, const int, const char *, va_list);
 
 bool		ecpg_check_PQresult(PGresult *, int, PGconn *, enum COMPAT_MODE);
 void		ecpg_raise(int line, int code, const char *sqlstate, const char *str);

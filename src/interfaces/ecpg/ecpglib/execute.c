@@ -1702,10 +1702,14 @@ ecpg_execute(struct statement * stmt)
 	return status;
 }
 
+/*
+ * Execute SQL statements in the backend.
+ * The input/output parameters (variable argument list) are passed
+ * in a va_list, so other functions can use this interface.
+ */
 bool
-ECPGdo(const int lineno, const int compat, const int force_indicator, const char *connection_name, const bool questionmarks, const int st, const char *query,...)
+ecpg_do(const int lineno, const int compat, const int force_indicator, const char *connection_name, const bool questionmarks, const int st, const char *query, va_list args)
 {
-	va_list		args;
 	struct statement *stmt;
 	struct connection *con;
 	bool		status;
@@ -1740,9 +1744,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 		return (false);
 	}
 
-	/* construct statement in our own structure */
-	va_start(args, query);
-
 	/*
 	 * create a list of variables The variables are listed with input
 	 * variables preceding outputvariables The end of each group is marked by
@@ -1765,7 +1766,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 		if (!ecpg_auto_prepare(lineno, connection_name, compat, &prepname, query))
 		{
 			ecpg_do_epilogue(stmt);
-			va_end(args);
 			return (false);
 		}
 
@@ -1795,7 +1795,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 		{
 			ecpg_raise(lineno, ECPG_INVALID_STMT, ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME, stmt->command);
 			ecpg_do_epilogue(stmt);
-			va_end(args);
 			return (false);
 		}
 	}
@@ -1823,7 +1822,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 			if (!(var = (struct variable *) ecpg_alloc(sizeof(struct variable), lineno)))
 			{
 				ecpg_do_epilogue(stmt);
-				va_end(args);
 				return false;
 			}
 
@@ -1879,7 +1877,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 				ecpg_raise(lineno, ECPG_INVALID_STMT, ECPG_SQLSTATE_INVALID_SQL_STATEMENT_NAME, NULL);
 				ecpg_free(var);
 				ecpg_do_epilogue(stmt);
-				va_end(args);
 				return false;
 			}
 
@@ -1893,8 +1890,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 
 		type = va_arg(args, enum ECPGttype);
 	}
-
-	va_end(args);
 
 	/* are we connected? */
 	if (con == NULL || con->connection == NULL)
@@ -1927,6 +1922,24 @@ ecpg_do_epilogue(struct statement *stmt)
 
 	setlocale(LC_NUMERIC, stmt->oldlocale);
 	free_statement(stmt);
+}
+
+/*
+ * Execute SQL statements in the backend.
+ * The input/output parameters are passed as variable-length argument list.
+ */
+bool
+ECPGdo(const int lineno, const int compat, const int force_indicator, const char *connection_name, const bool questionmarks, const int st, const char *query,...)
+{
+	va_list		args;
+	bool		ret;
+
+	va_start(args, query);
+	ret = ecpg_do(lineno, compat, force_indicator, connection_name,
+							questionmarks,
+							st, query, args);
+	va_end(args);
+	return ret;
 }
 
 /* old descriptor interface */
