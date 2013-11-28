@@ -1517,6 +1517,7 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 	{
 			int			nfields,
 						tuples_left,
+						act_tuple,
 						act_field;
 
 		case PGRES_TUPLES_OK:
@@ -1545,23 +1546,24 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 				{
 					if (append_result && desc->result)
 					{
-						int		tuples_left, act_tuple, col,
-								row = PQntuples(desc->result);
+						int		row = PQntuples(desc->result);
 
 						for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction, row++)
-							for (col = 0; col < nfields; col++)
+							for (act_field = 0; act_field < nfields; act_field++)
 							{
-								bool	isnull = PQgetisnull(stmt->results, act_tuple, col);
+								bool	isnull = PQgetisnull(stmt->results, act_tuple, act_field);
 
-								if (!PQsetvalue(desc->result, row, col,
-										isnull ? NULL : PQgetvalue(stmt->results, act_tuple, col),
-										isnull ? -1 : PQgetlength(stmt->results, act_tuple, col)))
+								if (!PQsetvalue(desc->result, row, act_field,
+										isnull ? NULL : PQgetvalue(stmt->results, act_tuple, act_field),
+										isnull ? -1 : PQgetlength(stmt->results, act_tuple, act_field)))
 								{
 									ecpg_raise(stmt->lineno, ECPG_OUT_OF_MEMORY, ECPG_SQLSTATE_ECPG_OUT_OF_MEMORY, NULL);
 									status = false;
 									break;
 								}
 							}
+						ecpg_log("ecpg_process_output on line %d: appending result (%d tuples) to descriptor %s\n",
+								 stmt->lineno, ntuples, (const char *) var->pointer);
 					}
 					else
 					{
@@ -1583,7 +1585,6 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 					struct sqlda_compat *sqlda = *_sqlda;
 					struct sqlda_compat *sqlda_last;
 					struct sqlda_compat *sqlda_new;
-					int			i;
 
 					if (append_result)
 					{
@@ -1605,13 +1606,13 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 						}
 						*_sqlda = sqlda = sqlda_last = NULL;
 					}
-					for (i = start; ntuples; ntuples--, i += direction)
+					for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction)
 					{
 						/*
 						 * Build a new sqlda structure. Note that only
 						 * fetching 1 record is supported
 						 */
-						sqlda_new = ecpg_build_compat_sqlda(stmt->lineno, stmt->results, i, stmt->compat);
+						sqlda_new = ecpg_build_compat_sqlda(stmt->lineno, stmt->results, act_tuple, stmt->compat);
 
 						if (!sqlda_new)
 						{
@@ -1642,7 +1643,7 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 								*_sqlda = sqlda = sqlda_last = sqlda_new;
 							}
 
-							ecpg_set_compat_sqlda(stmt->lineno, &sqlda_new, stmt->results, i, stmt->compat);
+							ecpg_set_compat_sqlda(stmt->lineno, &sqlda_new, stmt->results, act_tuple, stmt->compat);
 							ecpg_log("ecpg_process_output on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
 									 stmt->lineno, PQnfields(stmt->results));
 						}
@@ -1654,7 +1655,6 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 					struct sqlda_struct *sqlda = *_sqlda;
 					struct sqlda_struct *sqlda_last;
 					struct sqlda_struct *sqlda_new;
-					int			i;
 
 					if (append_result)
 					{
@@ -1676,13 +1676,13 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 						}
 						*_sqlda = sqlda = sqlda_last = NULL;
 					}
-					for (i = start; ntuples; ntuples--, i += direction)
+					for (tuples_left = ntuples, act_tuple = start; tuples_left; tuples_left--, act_tuple += direction)
 					{
 						/*
 						 * Build a new sqlda structure. Note that only
 						 * fetching 1 record is supported
 						 */
-						sqlda_new = ecpg_build_native_sqlda(stmt->lineno, stmt->results, i, stmt->compat);
+						sqlda_new = ecpg_build_native_sqlda(stmt->lineno, stmt->results, act_tuple, stmt->compat);
 
 						if (!sqlda_new)
 						{
@@ -1713,7 +1713,7 @@ ecpg_process_output(struct statement * stmt, int start, int ntuples, int directi
 								*_sqlda = sqlda = sqlda_last = sqlda_new;
 							}
 
-							ecpg_set_native_sqlda(stmt->lineno, &sqlda_new, stmt->results, i, stmt->compat);
+							ecpg_set_native_sqlda(stmt->lineno, &sqlda_new, stmt->results, act_tuple, stmt->compat);
 							ecpg_log("ecpg_process_output on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
 									 stmt->lineno, PQnfields(stmt->results));
 						}
