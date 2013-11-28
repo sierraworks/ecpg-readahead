@@ -32,6 +32,7 @@ enum ARRAY_TYPE
 #define LOOP_FORWARD	(1)
 #define LOOP_BACKWARD	(-1)
 #define MAX_CACHE_MISS	(3)
+#define FETCHALL_MULTIPLIER	(1000)
 
 /* A generic varchar type. */
 struct ECPGgeneric_varchar

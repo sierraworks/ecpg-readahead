@@ -1518,6 +1518,7 @@ ecpg_cursor_fetch(struct statement *stmt, struct cursor_descriptor *cur,
 	long		ntuples;
 	int		step;
 	int64		prev_pos, next_pos, start_idx, var_index;
+	int64		old_readahead;
 
 	switch (direction)
 	{
@@ -1689,6 +1690,10 @@ abs_rel:
 			goto abs_rel;
 		}
 
+		old_readahead = cur->readahead;
+		if (fetchall)
+			cur->readahead *= FETCHALL_MULTIPLIER;
+
 		/*
 		 * The direction is backward if FETCH BACKWARD ALL
 		 * or the amount to fetch is negative.
@@ -1771,6 +1776,8 @@ abs_rel:
 		}
 
 		sqlca->sqlerrd[2] = (var_index <= LONG_MAX ? var_index : 0);
+
+		cur->readahead = old_readahead;
 
 		if (var_index == 0)
 		{
