@@ -1125,17 +1125,17 @@ insert_tobeinserted(int position, int ph_len, struct statement * stmt, char *tob
 	return true;
 }
 
-static bool
-ecpg_execute(struct statement * stmt)
+/*
+ * ecpg_build_params
+ *	Build statement parameters from user variables into
+ *	an array of strings for PQexecParams().
+ */
+bool
+ecpg_build_params(struct statement * stmt)
 {
-	bool		status = false;
-	char	   *cmdstat;
-	PGnotify   *notify;
 	struct variable *var;
 	int			desc_counter = 0;
 	int			position = 0;
-	struct sqlca_t *sqlca = ECPGget_sqlca();
-	bool		clear_result = true;
 
 	/*
 	 * If the type is one of the fill in types then we take the argument and
@@ -1421,8 +1421,17 @@ ecpg_execute(struct statement * stmt)
 		return false;
 	}
 
-	/* The request has been build. */
+	return true;
+}
 
+/*
+ * ecpg_autostart_transaction
+ *	If we are in non-autocommit mode, automatically start
+ *	a transaction.
+ */
+bool
+ecpg_autostart_transaction(struct statement * stmt)
+{
 	if (PQtransactionStatus(stmt->connection->connection) == PQTRANS_IDLE && !stmt->connection->autocommit)
 	{
 		stmt->results = PQexec(stmt->connection->connection, "begin transaction");
@@ -1434,7 +1443,16 @@ ecpg_execute(struct statement * stmt)
 		PQclear(stmt->results);
 		stmt->results = NULL;
 	}
+	return true;
+}
 
+/*
+ * ecpg_execute
+ *	Execute the SQL statement.
+ */
+bool
+ecpg_execute(struct statement * stmt)
+{
 	ecpg_log("ecpg_execute on line %d: query: %s; with %d parameter(s) on connection %s\n", stmt->lineno, stmt->command, stmt->nparams, stmt->connection->name);
 	if (stmt->statement_type == ECPGst_execute)
 	{
@@ -1459,6 +1477,33 @@ ecpg_execute(struct statement * stmt)
 
 	if (!ecpg_check_PQresult(stmt->results, stmt->lineno, stmt->connection->connection, stmt->compat))
 		return (false);
+
+	return true;
+}
+
+/*
+ * ecpg_process_output
+ *	Process the statement result and store it into application variables.
+ *	This function can be called repeatedly during the same statement
+ *	in case cursor readahed is used and the application does FETCH N which
+ *	overflows the readahead window.
+ *
+ * Parameters
+ *	stmt	statement structure holding the PGresult and
+ *		the list of output variables
+ *	clear_result
+ *		PQclear() the result upon returning from this function
+ *
+ * Returns success as boolean. Also an SQL error is raised in case of failure.
+ */
+bool
+ecpg_process_output(struct statement * stmt, bool clear_result)
+{
+	struct variable *var;
+	bool		status = false;
+	char	   *cmdstat;
+	PGnotify   *notify;
+	struct sqlca_t *sqlca = ECPGget_sqlca();
 
 	var = stmt->outlist;
 	switch (PQresultStatus(stmt->results))
@@ -1947,7 +1992,6 @@ bool
 ecpg_do(const int lineno, const int compat, const int force_indicator, const char *connection_name, const bool questionmarks, const int st, const char *query, va_list args)
 {
 	struct statement   *stmt;
-	bool		status;
 
 	if (!ecpg_do_prologue(lineno, compat, force_indicator,
 				connection_name, questionmarks,
@@ -1958,12 +2002,33 @@ ecpg_do(const int lineno, const int compat, const int force_indicator, const cha
 		return false;
 	}
 
-	status = ecpg_execute(stmt);
+	if (!ecpg_build_params(stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
 
-	/* and reset locale value so our application is not affected */
+	if (!ecpg_autostart_transaction(stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	if (!ecpg_execute(stmt))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
+	if (!ecpg_process_output(stmt, true))
+	{
+		ecpg_do_epilogue(stmt);
+		return false;
+	}
+
 	ecpg_do_epilogue(stmt);
 
-	return (status);
+	return true;
 }
 
 /*
