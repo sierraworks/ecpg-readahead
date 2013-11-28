@@ -1515,13 +1515,13 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 		case PGRES_TUPLES_OK:
 			nfields = PQnfields(stmt->results);
 			sqlca->sqlerrd[2] = ntuples = PQntuples(stmt->results);
-			ecpg_log("ecpg_execute on line %d: correctly got %d tuples with %d fields\n", stmt->lineno, ntuples, nfields);
+			ecpg_log("ecpg_process_output on line %d: correctly got %d tuples with %d fields\n", stmt->lineno, ntuples, nfields);
 			status = true;
 
 			if (ntuples < 1)
 			{
 				if (ntuples)
-					ecpg_log("ecpg_execute on line %d: incorrect number of matches (%d)\n",
+					ecpg_log("ecpg_process_output on line %d: incorrect number of matches (%d)\n",
 							 stmt->lineno, ntuples);
 				ecpg_raise(stmt->lineno, ECPG_NOT_FOUND, ECPG_SQLSTATE_NO_DATA, NULL);
 				status = false;
@@ -1540,7 +1540,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 						PQclear(desc->result);
 					desc->result = stmt->results;
 					clear_result = false;
-					ecpg_log("ecpg_execute on line %d: putting result (%d tuples) into descriptor %s\n",
+					ecpg_log("ecpg_process_output on line %d: putting result (%d tuples) into descriptor %s\n",
 							 stmt->lineno, PQntuples(stmt->results), (const char *) var->pointer);
 				}
 				var = var->next;
@@ -1584,18 +1584,18 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 							}
 							*_sqlda = NULL;
 
-							ecpg_log("ecpg_execute on line %d: out of memory allocating a new sqlda\n", stmt->lineno);
+							ecpg_log("ecpg_process_output on line %d: out of memory allocating a new sqlda\n", stmt->lineno);
 							status = false;
 							break;
 						}
 						else
 						{
-							ecpg_log("ecpg_execute on line %d: new sqlda was built\n", stmt->lineno);
+							ecpg_log("ecpg_process_output on line %d: new sqlda was built\n", stmt->lineno);
 
 							*_sqlda = sqlda_new;
 
 							ecpg_set_compat_sqlda(stmt->lineno, _sqlda, stmt->results, i, stmt->compat);
-							ecpg_log("ecpg_execute on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
+							ecpg_log("ecpg_process_output on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
 									 stmt->lineno, PQnfields(stmt->results));
 
 							sqlda_new->desc_next = sqlda;
@@ -1640,18 +1640,18 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 							}
 							*_sqlda = NULL;
 
-							ecpg_log("ecpg_execute on line %d: out of memory allocating a new sqlda\n", stmt->lineno);
+							ecpg_log("ecpg_process_output on line %d: out of memory allocating a new sqlda\n", stmt->lineno);
 							status = false;
 							break;
 						}
 						else
 						{
-							ecpg_log("ecpg_execute on line %d: new sqlda was built\n", stmt->lineno);
+							ecpg_log("ecpg_process_output on line %d: new sqlda was built\n", stmt->lineno);
 
 							*_sqlda = sqlda_new;
 
 							ecpg_set_native_sqlda(stmt->lineno, _sqlda, stmt->results, i, stmt->compat);
-							ecpg_log("ecpg_execute on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
+							ecpg_log("ecpg_process_output on line %d: putting result (1 tuple %d fields) into sqlda descriptor\n",
 									 stmt->lineno, PQnfields(stmt->results));
 
 							sqlda_new->desc_next = sqlda;
@@ -1689,7 +1689,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 			cmdstat = PQcmdStatus(stmt->results);
 			sqlca->sqlerrd[1] = PQoidValue(stmt->results);
 			sqlca->sqlerrd[2] = atol(PQcmdTuples(stmt->results));
-			ecpg_log("ecpg_execute on line %d: OK: %s\n", stmt->lineno, cmdstat);
+			ecpg_log("ecpg_process_output on line %d: OK: %s\n", stmt->lineno, cmdstat);
 			if (stmt->compat != ECPG_COMPAT_INFORMIX_SE &&
 				!sqlca->sqlerrd[2] &&
 				(strncmp(cmdstat, "UPDATE", 6) == 0
@@ -1702,7 +1702,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 				char	   *buffer;
 				int			res;
 
-				ecpg_log("ecpg_execute on line %d: COPY OUT data transfer in progress\n", stmt->lineno);
+				ecpg_log("ecpg_process_output on line %d: COPY OUT data transfer in progress\n", stmt->lineno);
 				while ((res = PQgetCopyData(stmt->connection->connection,
 											&buffer, 0)) > 0)
 				{
@@ -1715,9 +1715,9 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 					PQclear(stmt->results);
 					stmt->results = PQgetResult(stmt->connection->connection);
 					if (PQresultStatus(stmt->results) == PGRES_COMMAND_OK)
-						ecpg_log("ecpg_execute on line %d: got PGRES_COMMAND_OK after PGRES_COPY_OUT\n", stmt->lineno);
+						ecpg_log("ecpg_process_output on line %d: got PGRES_COMMAND_OK after PGRES_COPY_OUT\n", stmt->lineno);
 					else
-						ecpg_log("ecpg_execute on line %d: got error after PGRES_COPY_OUT: %s", stmt->lineno, PQresultErrorMessage(stmt->results));
+						ecpg_log("ecpg_process_output on line %d: got error after PGRES_COPY_OUT: %s", stmt->lineno, PQresultErrorMessage(stmt->results));
 				}
 				break;
 			}
@@ -1727,7 +1727,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 			 * execution should never reach this code because it is already
 			 * handled in ECPGcheck_PQresult()
 			 */
-			ecpg_log("ecpg_execute on line %d: unknown execution status type\n",
+			ecpg_log("ecpg_process_output on line %d: unknown execution status type\n",
 					 stmt->lineno);
 			ecpg_raise_backend(stmt->lineno, stmt->results, stmt->connection->connection, stmt->compat);
 			status = false;
@@ -1743,7 +1743,7 @@ ecpg_process_output(struct statement * stmt, bool clear_result)
 	notify = PQnotifies(stmt->connection->connection);
 	if (notify)
 	{
-		ecpg_log("ecpg_execute on line %d: asynchronous notification of \"%s\" from backend PID %d received\n",
+		ecpg_log("ecpg_process_output on line %d: asynchronous notification of \"%s\" from backend PID %d received\n",
 				 stmt->lineno, notify->relname, notify->be_pid);
 		PQfreemem(notify);
 	}
