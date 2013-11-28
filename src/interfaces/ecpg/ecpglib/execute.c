@@ -433,7 +433,7 @@ ecpg_store_result(const PGresult *results, int act_field,
 		{
 			int			len = strlen(PQgetvalue(results, act_tuple, act_field)) + 1;
 
-			if (!ecpg_get_data(results, act_tuple, act_field, stmt->lineno,
+			if (!ecpg_get_data(results, act_tuple, act_field, act_tuple, stmt->lineno,
 							 var->type, var->ind_type, current_data_location,
 							   var->ind_value, len, 0, var->ind_offset, isarray, stmt->compat, stmt->force_indicator))
 				status = false;
@@ -452,7 +452,7 @@ ecpg_store_result(const PGresult *results, int act_field,
 	{
 		for (act_tuple = 0; act_tuple < ntuples && status; act_tuple++)
 		{
-			if (!ecpg_get_data(results, act_tuple, act_field, stmt->lineno,
+			if (!ecpg_get_data(results, act_tuple, act_field, act_tuple, stmt->lineno,
 							   var->type, var->ind_type, var->value,
 							   var->ind_value, var->varcharsize, var->offset, var->ind_offset, isarray, stmt->compat, stmt->force_indicator))
 				status = false;

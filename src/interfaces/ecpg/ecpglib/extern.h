@@ -139,7 +139,7 @@ extern struct var_list *ivlist;
 /* Returns a pointer to a string containing a simple type name. */
 void		ecpg_add_mem(void *ptr, int lineno);
 
-bool ecpg_get_data(const PGresult *, int, int, int, enum ECPGttype type,
+bool ecpg_get_data(const PGresult *, int, int, int, int, enum ECPGttype type,
 			  enum ECPGttype, char *, char *, long, long, long,
 			  enum ARRAY_TYPE, enum COMPAT_MODE, bool);
 
