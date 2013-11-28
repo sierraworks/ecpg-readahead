@@ -1720,6 +1720,9 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 		return (false);
 	}
 
+	if (!(stmt = (struct statement *) ecpg_alloc(sizeof(struct statement), lineno)))
+		return false;
+
 	/* Make sure we do NOT honor the locale for numeric input/output */
 	/* since the database wants the standard decimal point */
 	oldlocale = ecpg_strdup(setlocale(LC_NUMERIC, NULL), lineno);
@@ -1735,6 +1738,7 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	{
 		setlocale(LC_NUMERIC, oldlocale);
 		ecpg_free(oldlocale);
+		free_statement(stmt);
 		return (false);
 	}
 
@@ -1753,13 +1757,6 @@ ECPGdo(const int lineno, const int compat, const int force_indicator, const char
 	 * - pointer to indicator variable ind_varcharsize - empty ind_arraysize -
 	 * arraysize of indicator array ind_offset - indicator offset
 	 */
-	if (!(stmt = (struct statement *) ecpg_alloc(sizeof(struct statement), lineno)))
-	{
-		setlocale(LC_NUMERIC, oldlocale);
-		ecpg_free(oldlocale);
-		va_end(args);
-		return false;
-	}
 
 	/*
 	 * If statement type is ECPGst_prepnormal we are supposed to prepare the
