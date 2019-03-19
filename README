@@ -1,3 +1,16 @@
+This is a fork of zboszor's wonderful read-ahead patches to ECPG for Postgresql.   It has been tested against AWS Aurora PG v10.
+
+The fork is to remove all of the non-needed code since it originally built a complete Postgresql install.  Now it just builds the ECPG files.
+
+Other changes:
+
+A:  an environment ECPG_ROOT is used to indicate the top level directory.  This allows moving the source around without having to rerun the configuration utility.
+
+B:  the install will NOT put the .a, .so and .h files into the system area.  This ensures that a standard PG install isn't stepped on.  The install directory is defined with an environmental variable called ECPG_INSTALL.
+
+-- below is the original README
+
+
 PostgreSQL Database Management System
 =====================================
 
